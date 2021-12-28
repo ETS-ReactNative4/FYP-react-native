@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "FYP",
+    "slug": "FYP",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
+    "splash": {
+      "image": "./assets/images/logo.png",
+      "resizeMode": "contain"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo.png",
+        "backgroundColor": "white"
+      },
+      "package": "FYP.app.test"
+    },
+    "web": {
+      "favicon": "./assets/images/logo.png"
+    }
+  }
+}
