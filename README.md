@@ -8,6 +8,6 @@ Make sure you have:
 Inside the FYP-react-native folder, run the following command in Command Line
 `npm start`
 
-You can run the application using an emulator or your phone using Expo
-[Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US)
+You can run the application using an emulator or your phone using Expo<br/>
+[Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US)<br/>
 [App Store](https://apps.apple.com/us/app/expo-go/id982107779)
