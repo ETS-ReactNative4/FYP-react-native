@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
-        "backgroundColor": "white"
+        "backgroundColor": "#000000"
       },
       "package": "FYP.app.test"
     },
