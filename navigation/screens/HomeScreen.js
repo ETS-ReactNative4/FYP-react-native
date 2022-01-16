@@ -11,7 +11,7 @@ export default function HomeScreen({navigation}){
         <View style={styles.container}>
             <Entypo name="home" size={24} color="black" />
             <MapView style={styles.map} initialRegion={initRegion}>
-            {
+            { //Returned error, probably due to using json instead of state?
                 coords.coordinates.map(marker => (
                     <Marker key={marker.name} coordinate={{latitude:marker.latitude, longitude:marker.longitude}} title={marker.name}>
                     <Image source={require('../../assets/images/marker_icon.png')}/>
