@@ -8,11 +8,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 // Screens
 import HomeScreen from './screens/HomeScreen';
 import AIScreen from './screens/AIScreen';
-import AccountScreen from './screens/AccountScreen';
 import RecyclemallScreen from './screens/RecyclemallScreen';
 import TrackerScreen from './screens/TrackerScreen';
-import SignupScreen from './screens/SignupScreen';
 
+import AccountScreen from './screens/AccountScreen';
+import SignupScreen from './screens/SignupScreen';
+import UserScreen from './screens/UserScreen';
+import MyProfileScreen from './screens/MyProfileScreen';
+import ChangePasswordScreen from './screens/ChangePasswordScreen'
 
 //Screen names
 const homeName = "Home";
@@ -26,10 +29,12 @@ const Tab = createBottomTabNavigator();
 function MainContainer() {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="dark-content" backgroundColor="seagreen" />
       <Tab.Navigator
         initialRouteName={homeName}
         screenOptions={({ route }) => ({
+          headerStyle:{backgroundColor: 'seagreen'},
+          headerTintColor:"white",
           "tabBarHideOnKeyboard":"true",
           "tabBarActiveTintColor": "seagreen",
           "tabBarInactiveTintColor": "grey",
@@ -70,7 +75,11 @@ function MainContainer() {
         <Tab.Screen name={AIName} component={AIScreen} />
         <Tab.Screen name={recycelmallName} component={RecyclemallScreen} />
         <Tab.Screen name={trackerName} component={TrackerScreen}  />
-        <Tab.Screen name={accountName} component={Account} />
+        <Tab.Screen  
+        options={{
+        headerShown: false }} 
+        name={accountName} 
+        component={Account} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -83,14 +92,19 @@ function Account() {
       <NavigationContainer independent={true}>
       <Stack.Navigator  
       screenOptions={{
-        headerShown: false
+         headerStyle:{backgroundColor: 'seagreen'},
+        headerTintColor:"white",
+        headerShown: true
        }}>
-      <Stack.Screen name="AccountScreen" component={AccountScreen} />
-      <Stack.Screen name="SignupScreen" component={SignupScreen} />
+      <Stack.Screen name="Account" component={AccountScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen options={{headerLeft: null}} name="User" component={UserScreen} />
+      <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
+      <Stack.Screen name="Profile" component={MyProfileScreen} />
     </Stack.Navigator>
     </NavigationContainer>
 
   )}
 
-
 export default MainContainer;
+
