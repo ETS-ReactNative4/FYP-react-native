@@ -15,13 +15,10 @@ export default function CustomButton({onPress, text}){
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'seagreen',
-
         width: '80%',
         padding: 15,
         marginVertical: 5,
-
         alignItems: 'center',
-
         borderRadius: 5,
 
     },

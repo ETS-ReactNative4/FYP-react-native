@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { useState } from "react";
-import { View, Text, Image, Pressable, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
-import CustomInput from '../../CustomInput';
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert } from 'react-native';
+import { StatusBar } from 'react-native';
+import profilePic from '../../assets/images/user.png';
 import CustomButton from '../../CustomButton/CutomButton';
+import { TextInput } from 'react-native-gesture-handler';
 import { useForm, Controller } from 'react-hook-form';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function SignupScreen({ navigation }) {
+export default function MyProfileScreen({ navigation }) {
 
     const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
-    const onSignUpPressed = () => {
-        Alert.alert("Account", "Your Account Has Been Created");
+    const onSaveChangesPressed = () => {
+        Alert.alert("Profile", "Saved Changes");
     }
 
-    const onHaveAnAcount = () => {
-        navigation.navigate('Account')
+    const onChangePasswordPressed = () => {
+        navigation.navigate('Change Password');
     }
 
     const { control, handleSubmit, watch, formState: { errors } } = useForm();
@@ -25,32 +26,8 @@ export default function SignupScreen({ navigation }) {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
-                <Text style={styles.title}>Create an Account</Text>
-                <Controller
-                    control={control}
-                    name="username"
-                    rules={{
-                        required: 'Username is required',
-                        minLength: { value: 3, message: 'Username should be longer than 3 characters' },
-                        maxLength: { value: 24, message: 'Username should be shorter than 24 characters' }
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Username"
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
-                />
+                <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
+                <Text style={styles.username}>Username</Text>
 
                 <Controller
                     control={control}
@@ -65,6 +42,7 @@ export default function SignupScreen({ navigation }) {
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
                                 value={value}
+                                defaultValue='info@gmail.com'
                                 onChangeText={onChange}
                                 onBlur={onBlur}
                                 placeholder="Email address"
@@ -79,11 +57,11 @@ export default function SignupScreen({ navigation }) {
 
                 <Controller
                     control={control}
-                    name="userpassword"
+                    name="userphone"
                     rules={{
-                        required: 'Password is required',
-                        minLength: { value: 8, message: 'Password should be longer than 8 characters' },
-                        maxLength: { value: 24, message: 'Password should be shorter than 24 characters' }
+                        required: 'Phone Number is required',
+                        maxLength: { value: 8, message: 'Phone Number should be 8 digits ' },
+                        minLength: { value: 8, message: 'Phone Number should be 8 digits ' }
                     }
                     }
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
@@ -91,10 +69,11 @@ export default function SignupScreen({ navigation }) {
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
                                 value={value}
+                                defaultValue='39282000'
                                 onChangeText={onChange}
                                 onBlur={onBlur}
-                                placeholder="Password"
-                                secureTextEntry={true}
+                                placeholder="Phone Number"
+                                keyboardType='numeric'
                             />
                             {error && (
                                 <Text style={{ color: 'red' }}>
@@ -106,21 +85,20 @@ export default function SignupScreen({ navigation }) {
 
                 <Controller
                     control={control}
-                    name="userconfirmpassword"
+                    name="useraddress"
                     rules={{
-                        validate: value => 
-                            value === pwd  || 'Password do not match',
-                        }
+                        required: 'Address is required'
+                    }
                     }
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
                                 value={value}
+                                defaultValue='3 King Ling Road, Tseung Kwan O'
                                 onChangeText={onChange}
                                 onBlur={onBlur}
-                                placeholder="Confirm Password"
-                                secureTextEntry={true}
+                                placeholder="Address"
                             />
                             {error && (
                                 <Text style={{ color: 'red' }}>
@@ -130,16 +108,18 @@ export default function SignupScreen({ navigation }) {
                     )}
                 />
 
-                <CustomButton text="Register" onPress={handleSubmit(onSignUpPressed)} />
-
                 <Pressable
-                    onPress={onHaveAnAcount}>
-                    <Text style={{ color: 'grey', marginVertical: 5, }}>
-                        Already have an Account? Sign In</Text>
+                    onPress={onChangePasswordPressed}
+                    style={styles.changePWD}>
+                    <Text style={styles.changePWDtxt}>Change Password</Text>
                 </Pressable>
+
+                <CustomButton text="Save" onPress={handleSubmit(onSaveChangesPressed)} />
+
             </View>
         </ScrollView>
-    );
+
+    )
 }
 
 const styles = StyleSheet.create({
@@ -160,6 +140,29 @@ const styles = StyleSheet.create({
 
         padding: 10,
         marginVertical: 5,
+    },
+    icon: {
+        width: 125,
+        height: 125,
+        borderRadius: 150 / 2,
+        overflow: "hidden",
+    },
+    username: {
+        margin: 10,
+        fontSize: 25,
+        color: 'black',
+    },
+    changePWD:{
+        backgroundColor: 'white',
+        width: '80%',
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    changePWDtxt: {
+        fontWeight: 'bold',
+        color: 'seagreen',
     }
 
 });

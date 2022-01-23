@@ -1,51 +1,95 @@
 import * as React from 'react';
-import {useState} from "react";
-import {View, Text, Image, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, ScrollView } from 'react-native';
 import Logo from '../../assets/images/logo.png';
-import CustomInput from '../../CustomInput';
 import CustomButton from '../../CustomButton/CutomButton';
 import SignupScreen from './SignupScreen';
+import UserScreen from './UserScreen';
 import { TextInput } from 'react-native-gesture-handler';
+import { useForm, Controller } from 'react-hook-form';
+import { createStackNavigator } from '@react-navigation/stack';
 
 
-export default function AccountScreen({navigation}){
 
-    const [userEmail, setUserEmail] = useState('');
+export default function AccountScreen({ navigation }) {
 
-    const onSignInPressed = () => {
-        console.warn("Sign in");
+    const { control, handleSubmit, formState: { errors } } = useForm();
+
+    const onSignInPressed = (data) => {
+        navigation.navigate('User')
     }
 
     const onCreateAccountPressed = () => {
-        navigation.navigate('SignupScreen')
+        navigation.navigate('Signup')
     }
 
-    return(
+    return (
         <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ flex: 1, alignItems: 'center', paddingTop: 50 }}>
-            <Image source={Logo} style={styles.logo} resizeMode='contain'></Image>
-            <CustomInput 
-                placeholder="Email Address"
-                value={userEmail} 
-                setValue={setUserEmail}
-            />
+            <View style={{ flex: 1, alignItems: 'center', paddingTop: 50 }}>
+                <Image source={Logo} style={styles.logo} resizeMode='contain'></Image>
+                <Text style={{fontSize: 20, fontWeight: 'bold', color: '#82c844', paddingBottom: 5 }}>
+                    E-Recycle
+                </Text>
 
-            <TextInput
-                secureTextEntry={true}
-                placeholder="Password" 
-                style={styles.password}                 
-            />
+                <Controller
+                    control={control}
+                    name="username"
+                    rules={{ 
+                        required: 'Username is required', 
+                        minLength: {value: 3, message: 'Username should be longer than 3 characters'}
+                            }}
+                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    <>
+                        <TextInput
+                            style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
+                            value={value}
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            placeholder="Username"
+                        />
+                        {error && (
+                        <Text style={{color:'red'}}>
+                           {error.message || 'Error'}
+                        </Text>)}
+                    </>
+                    )}
+                />
+                
 
-            <CustomButton text="Sign In" onPress={onSignInPressed}/>
+                <Controller
+                    control={control}
+                    name="userpassword"
+                    rules={{ required: 'Password is required' }}
+                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    <>
+                        <TextInput
+                            style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
+                            value={value}
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            placeholder="Password"
+                            secureTextEntry={true}
+                        />
+                        {error && (
+                        <Text style={{color:'red'}}>
+                            {error.message || 'Error'}
+                        </Text>)}
+                </>
+                        )
+                    }
+                />
 
-            <Pressable
-            onPress = {onCreateAccountPressed}>
-            <Text style={{color: 'grey',
-        marginVertical: 5,}}>Don't have an Account? Create One</Text>   
-        </Pressable>
-        </View>
+                <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} />
+
+                <Pressable
+                    onPress={onCreateAccountPressed}>
+                    <Text style={{
+                        color: 'grey',
+                        marginVertical: 5,
+                    }}>Don't have an Account? Create One</Text>
+                </Pressable>
+            </View>
         </ScrollView>
-  );    
+    );
 }
 
 const styles = StyleSheet.create({
@@ -55,7 +99,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginBottom: 5
     },
-    password:{
+    input: {
         backgroundColor: 'white',
         width: '80%',
 
