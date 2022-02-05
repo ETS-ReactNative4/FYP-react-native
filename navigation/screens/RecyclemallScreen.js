@@ -9,7 +9,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 export default function RecyclemallScreen({ navigation }) {
 
     const onParnShopPress = (data) => {
-        navigation.navigate('Reward')
+
+        navigation.navigate('Reward', {
+            rewardId: 1,
+        })
     }
 
     const onWellcomePress = (data) => {
@@ -61,7 +64,8 @@ export default function RecyclemallScreen({ navigation }) {
                     width: '95%', 
                     height: '100%', 
                     backgroundColor: '#f2f2f2', 
-                    borderRadius: 10
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
                 }}>
 
                 <Pressable onPress={onParnShopPress}>
