@@ -19,6 +19,7 @@ import ChangePasswordScreen from './screens/ChangePasswordScreen'
 
 import RecyclemallScreen from './screens/RecyclemallScreen';
 import RewardScreen from './screens/RewardScreen';
+import CoupponScreen from './screens/CouponScreen';
 //Screen names
 const homeName = "Home";
 const AIName = "AI Identify";
@@ -123,6 +124,7 @@ function RecycleMall() {
         }}>
         <Stack.Screen name="Recycle Mall" component={RecyclemallScreen} />
         <Stack.Screen name="Reward" component={RewardScreen} />
+        <Stack.Screen name="Redeemed Reward" component={CoupponScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

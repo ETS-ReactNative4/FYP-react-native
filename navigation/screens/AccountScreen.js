@@ -6,7 +6,6 @@ import SignupScreen from './SignupScreen';
 import UserScreen from './UserScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import { useForm, Controller } from 'react-hook-form';
-import { createStackNavigator } from '@react-navigation/stack';
 
 
 

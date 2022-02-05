@@ -1,26 +1,39 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableHighlight } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import ParknShopIcon from '../../assets/images/ParknShopIcon.png';
 import WellcomeIcon from '../../assets/images/wellcomeIcon.jpg';
-import FortressIcon from '../../assets/images/FortressIcon.jpg'
-import { createStackNavigator } from '@react-navigation/stack';
+import FortressIcon from '../../assets/images/FortressIcon.jpg';
+import Ripple from 'react-native-material-ripple';
 
 export default function RecyclemallScreen({ navigation }) {
 
     const onParnShopPress = (data) => {
 
         navigation.navigate('Reward', {
-            rewardId: 1,
+            rewardName: 'PARKnSHOP Gift Coupon | HK$50',
+            requiredPoints: 100,
+            rewardPic: require('../../assets/images/ParknShopIcon.png'),
+            description: '1.    During the promotion period, eligible MoneyBack members shop at PARKnSHOP eShop or PARKnSHOP Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
         })
     }
 
     const onWellcomePress = (data) => {
-        alert('redeemed Wellcome');
+        navigation.navigate('Reward', {
+            rewardName: 'Wellcome Gift Coupon | HK$100',
+            requiredPoints: 150,
+            rewardPic: require('../../assets/images/wellcomeIcon.jpg'),
+            description: '1.    During the promotion period, eligible MoneyBack members shop at Wellcome eShop or Wellcome Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
+        })
     }
 
     const onFortressPress = (data) => {
-        alert('redeemed Fortress');
+        navigation.navigate('Reward', {
+            rewardName: 'Fortress Voucher | HK$100',
+            requiredPoints: 175,
+            rewardPic: require('../../assets/images/FortressIcon.jpg'),
+            description: '1.    During the promotion period, eligible MoneyBack members shop at Fortress eShop or Fortress Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
+        })
     }
 
     return (
@@ -60,88 +73,85 @@ export default function RecyclemallScreen({ navigation }) {
 
             <ScrollView showsVerticalScrollIndicator={false}
                 style={{
-                    flex: 1, 
-                    width: '95%', 
-                    height: '100%', 
-                    backgroundColor: '#f2f2f2', 
+                    flex: 1,
+                    width: '95%',
+                    height: '100%',
+                    backgroundColor: '#f2f2f2',
                     borderTopLeftRadius: 10,
                     borderTopRightRadius: 10,
                 }}>
 
-                <Pressable onPress={onParnShopPress}>
-                    <View style={{
+                <Ripple
+                    style={{
                         height: 150,
                         margin: 10,
                         borderColor: 'grey',
                         borderWidth: 1,
                         borderRadius: 10,
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
+                    }} onPress={onParnShopPress}>
+                    <View style={{
+                        flexDirection: 'row',
 
+                    }}>
+                        <Image source={ParknShopIcon} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>PARKnSHOP Gift Coupon | HK$50 </Text>
+                        <View style={{
+                            paddingTop: 100,
+                            alignSelf: 'flex-end',
+                            margin: 5
                         }}>
-                            <Image source={ParknShopIcon} style={styles.coupocIcon}></Image>
-                            <Text style={styles.productText}>PARKnSHOP Gift Coupon | HK$50 </Text>
-                            <View style={{
-                                paddingTop: 100,
-                                alignSelf: 'flex-end',
-                                margin: 5
-                            }}>
-                                <Text>100 Points</Text>
-                            </View>
+                            <Text>100 Points</Text>
                         </View>
                     </View>
-                </Pressable>
+                </Ripple>
 
-                <Pressable onPress={onWellcomePress}>
-                    <View style={{
+                <Ripple
+                    style={{
                         height: 150,
                         margin: 10,
                         borderColor: 'grey',
                         borderWidth: 1,
                         borderRadius: 10,
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
+                    }} onPress={onWellcomePress}>
+                    <View style={{
+                        flexDirection: 'row',
 
+                    }}>
+                        <Image source={WellcomeIcon} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Wellcome Gift Coupon | HK$100 </Text>
+                        <View style={{
+                            paddingTop: 100,
+                            alignSelf: 'flex-end',
+                            margin: 5
                         }}>
-                            <Image source={WellcomeIcon} style={styles.coupocIcon}></Image>
-                            <Text style={styles.productText}>Wellcome Gift Coupon | HK$100 </Text>
-                            <View style={{
-                                paddingTop: 100,
-                                alignSelf: 'flex-end',
-                                margin: 5
-                            }}>
-                                <Text>150 Points</Text>
-                            </View>
+                            <Text>150 Points</Text>
                         </View>
                     </View>
-                </Pressable>
+                </Ripple>
 
-                <Pressable onPress={onFortressPress}>
-                    <View style={{
+                <Ripple
+                    style={{
                         height: 150,
                         margin: 10,
                         borderColor: 'grey',
                         borderWidth: 1,
                         borderRadius: 10,
-                    }}>
-                        <View style={{
-                            flexDirection: 'row',
+                    }} onPress={onFortressPress}>
+                    <View style={{
+                        flexDirection: 'row',
 
+                    }}>
+                        <Image source={FortressIcon} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Fortress Voucher | HK$100 </Text>
+                        <View style={{
+                            paddingTop: 100,
+                            alignSelf: 'flex-end',
+                            margin: 5
                         }}>
-                            <Image source={FortressIcon} style={styles.coupocIcon}></Image>
-                            <Text style={styles.productText}>Fortress Voucher | HK$100 </Text>
-                            <View style={{
-                                paddingTop: 100,
-                                alignSelf: 'flex-end',
-                                margin: 5
-                            }}>
-                                <Text>175 Points</Text>
-                            </View>
+                            <Text>175 Points</Text>
                         </View>
                     </View>
-                </Pressable>
+                </Ripple>
 
             </ScrollView>
         </View >
