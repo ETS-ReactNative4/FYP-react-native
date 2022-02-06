@@ -76,11 +76,16 @@ function MainContainer() {
 
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={AIName} component={AIScreen} />
-        <Tab.Screen options={{
-          headerShown: false
-        }}
+        <Tab.Screen
+          options={{
+            headerShown: false
+          }}
           name={recycelmallName} component={RecycleMall} />
-        <Tab.Screen name={trackerName} component={TrackerScreen} />
+        <Tab.Screen
+          options={{
+            headerShown: false
+          }}
+          name={trackerName} component={Tracker} />
         <Tab.Screen
           options={{
             headerShown: false
@@ -125,6 +130,21 @@ function RecycleMall() {
         <Stack.Screen name="Recycle Mall" component={RecyclemallScreen} />
         <Stack.Screen name="Reward" component={RewardScreen} />
         <Stack.Screen name="Redeemed Reward" component={CoupponScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+function Tracker() {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: 'seagreen' },
+          headerTintColor: "white",
+          headerShown: true
+        }}>
+        <Stack.Screen name="Tracker" component={TrackerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
