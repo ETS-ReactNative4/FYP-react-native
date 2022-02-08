@@ -83,7 +83,7 @@ function MainContainer() {
           name={recycelmallName} component={RecycleMall} />
         <Tab.Screen
           options={{
-            headerShown: false
+            headerShown: false,
           }}
           name={trackerName} component={Tracker} />
         <Tab.Screen
@@ -110,7 +110,10 @@ function Account() {
         }}>
         <Stack.Screen name="Account" component={AccountScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen options={{ headerLeft: null }} name="User" component={UserScreen} />
+        <Stack.Screen options={{
+           headerLeft: null,  
+            headerShown: false
+          }}  name="User" component={UserScreen} />
         <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
         <Stack.Screen name="Profile" component={MyProfileScreen} />
       </Stack.Navigator>

@@ -40,13 +40,11 @@ export default function RecyclemallScreen({ navigation }) {
         <View style={{
             flex: 1,
             alignItems: 'center',
-            fontSize: 15,
             backgroundColor: 'seagreen'
         }}>
             <View style={{
-                flex: 0.45,
+                flex: 0.4,
                 margin: 20,
-                height: '22%',
                 width: '95%',
                 flexDirection: 'row',
                 textAlign: 'left',
@@ -55,8 +53,11 @@ export default function RecyclemallScreen({ navigation }) {
                 borderRadius: 10
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
-                <View style={{ flexDirection: 'column' }}>
+                    <Text style={styles.username}>Username</Text>
+                <View style={{ flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                marginBottom: 5
+                                }}>
                     <Text style={{
                         paddingRight: 5,
                         paddingTop: 85,
@@ -184,6 +185,9 @@ const styles = StyleSheet.create({
         borderRadius: 70,
     },
     username: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center',
         paddingTop: 10,
         flex: 1,
         fontSize: 25,

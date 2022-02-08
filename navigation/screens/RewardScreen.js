@@ -18,7 +18,8 @@ export default function RewardScreen({ route, navigation }) {
             [
                 {
                     text: "Yes",
-                    onPress: () => navigation.navigate('Redeemed Reward',{
+                    onPress: () => 
+                    navigation.navigate('Redeemed Reward',{
                         rewardName: JSON.parse(JSON.stringify(rewardName))
                     }),
                 },

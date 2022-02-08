@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyProfileScreen from './MyProfileScreen';
@@ -23,22 +23,43 @@ export default function UserScreen({ navigation }) {
 
     return (
 
-        <>
+        <View style={{
+            flex:1,
+            backgroundColor:'seagreen'
+            }}>
             <View style={{
+                flex: 1.2,
                 backgroundColor: 'seagreen',
                 alignItems: 'center',
                 paddingTop: 20,
+                justifyContent: 'center'
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
                 <Text style={styles.username}>Username</Text>
+
+                <View style={{
+                    borderRadius: 20,
+                    margin: 2,
+                    backgroundColor: '#F2F2F2',
+                }}>
+                    <Text style={styles.recyclePoints}>100 Recycle Points</Text>
+                </View>
             </View>
 
-            <View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                    backgroundColor: '#F2F2F2',
+                    flex: 0.5,
+                   borderTopLeftRadius: 15,
+                   borderTopRightRadius: 15,
+
+                }}>
 
                 <Ripple
                     onPress={onMyProfilePressed}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="person-sharp" size={30} color="seagreen" />
+                    <Ionicons name="person-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>My Profile</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
                 </Ripple>
@@ -46,7 +67,7 @@ export default function UserScreen({ navigation }) {
                 <Ripple
                     //onPress={}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="gift-sharp" size={30} color="seagreen" />
+                    <Ionicons name="gift-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>Redeemed Rewards</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
                 </Ripple>
@@ -54,13 +75,18 @@ export default function UserScreen({ navigation }) {
                 <Ripple
                     onPress={onContactUsPressed}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="call-sharp" size={30} color="seagreen" />
+                    <Ionicons name="call-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>Contact Us</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
                 </Ripple>
 
-            </View>
-            <View style={{ paddingBottom: 5, alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+            </ScrollView>
+            <View style={{ 
+                paddingBottom: 5, 
+                alignItems: 'center', 
+                justifyContent: 'flex-end', 
+                flex: 1,
+                backgroundColor: '#F2F2F2' }}>
 
                 <Ripple
                     onPress={logOutPresssed}
@@ -70,7 +96,7 @@ export default function UserScreen({ navigation }) {
                 </Ripple>
 
             </View>
-        </>
+        </View>
     )
 }
 
@@ -82,7 +108,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginVertical: 5,
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 15,
         flexDirection: 'row',
         justifyContent: 'center'
     },
@@ -92,18 +118,19 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     icon: {
-        width: 150,
-        height: 150,
+        width: 70,
+        height: 70,
         borderRadius: 150 / 2,
         overflow: "hidden"
     },
     username: {
         margin: 10,
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: 'bold',
         color: 'whitesmoke',
     },
     acFunctionBtn: {
+        flex: 1,
         paddingTop: 15,
         paddingBottom: 15,
         width: '100%',
@@ -117,6 +144,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'dimgrey',
         paddingLeft: 10,
+    },
+    recyclePoints: {
+        fontSize: 15,
+        padding: 5,
+        color: 'seagreen'
     }
 
 })
