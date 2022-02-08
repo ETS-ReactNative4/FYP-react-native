@@ -61,6 +61,7 @@ export default function RedeemedRewardScreen({ route, navigation }) {
         }}>
             <StatusBar barStyle="dark-content" backgroundColor="#F2F2F2" />
             <View style={{
+                flex:0.1,
                 flexDirection: 'row',
             }}>
                 <Ripple style={styles.SelectedTopBarBtn}>

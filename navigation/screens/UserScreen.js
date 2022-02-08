@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, ImageBackground, StatusBar } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyProfileScreen from './MyProfileScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ripple from 'react-native-material-ripple';
-
+import BackGroundPattern from '../../assets/images/BackGrounfPattern.jpg'
 
 export default function UserScreen({ navigation }) {
 
@@ -26,35 +26,41 @@ export default function UserScreen({ navigation }) {
     }
 
     return (
-
+ 
         <View style={{
             flex: 1,
             backgroundColor: 'seagreen'
         }}>
-            <View style={{
-                flex: 1.2,
-                backgroundColor: 'seagreen',
-                alignItems: 'center',
-                paddingTop: 20,
-                justifyContent: 'center'
+            <StatusBar barStyle="dark-content" backgroundColor="seagreen" />
+            <ImageBackground source={BackGroundPattern} style={{
+                flex: 1,
+                resizeMode: 'cover',
+                justifyContent: 'center',
             }}>
-                <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
 
                 <View style={{
-                    borderRadius: 15,
-                    margin: 2,
-                    backgroundColor: '#1d5837',
+                    flex: 1.2,
+                    alignItems: 'center',
+                    paddingTop: 20,
+                    justifyContent: 'center'
                 }}>
-                    <Text style={styles.recyclePoints}>100 Recycle Points</Text>
-                </View>
-            </View>
+                    <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
+                    <Text style={styles.username}>Username</Text>
 
+                    <View style={{
+                        borderRadius: 15,
+                        margin: 2,
+                        backgroundColor: '#1d5837',
+                    }}>
+                        <Text style={styles.recyclePoints}>100 Recycle Points</Text>
+                    </View>
+                </View>
+            </ImageBackground>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{
                     backgroundColor: '#F2F2F2',
-                    flex: 0.5,
+                    flex: 1,
                     borderTopLeftRadius: 15,
                     borderTopRightRadius: 15,
 
@@ -123,8 +129,8 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     icon: {
-        width: 70,
-        height: 70,
+        width: 90,
+        height: 90,
         borderRadius: 150 / 2,
         overflow: "hidden"
     },
@@ -142,7 +148,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         alignItems: 'center',
         flexDirection: 'row',
-
     },
     acFunctionTxt: {
         fontSize: 20,

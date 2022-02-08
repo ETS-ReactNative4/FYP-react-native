@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, ImageBackground} from 'react-native';
 import profilePic from '../../assets/images/user.png';
 
 export default function TrackerScreen({ navigation }) {
