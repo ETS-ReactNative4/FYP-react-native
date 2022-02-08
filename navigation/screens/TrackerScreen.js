@@ -11,17 +11,18 @@ export default function TrackerScreen({ navigation }) {
                 flex: 0.4,
                 backgroundColor: 'seagreen',
                 alignItems: 'center',
-                paddingTop: 20,
+                paddingTop: 10,
+                paddingBottom: 10,
                 justifyContent: 'center'
+
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
                 <Text style={styles.username}>Username</Text>
 
                 <View style={{
                     borderRadius: 20,
-                    margin: 2,
-                    backgroundColor: '#F2F2F2',
-                    marginBottom: 15,
+                    margin:2,
+                    backgroundColor: '#1d5837',
                 }}>
                     <Text style={styles.recyclePoints}>100 Recycle Points</Text>
                 </View>
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     recyclePoints: {
         fontSize: 15,
         padding: 5,
-        color: 'seagreen',
+        color: 'white',
     }
 
 });

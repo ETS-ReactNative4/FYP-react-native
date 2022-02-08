@@ -15,7 +15,9 @@ import AccountScreen from './screens/AccountScreen';
 import SignupScreen from './screens/SignupScreen';
 import UserScreen from './screens/UserScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
-import ChangePasswordScreen from './screens/ChangePasswordScreen'
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
+import RedeemedRewardScreen from './screens/RedeemedRewardScreen.js';
+import UsedRewardScreen from './screens/UsedRewardScreen';
 
 import RecyclemallScreen from './screens/RecyclemallScreen';
 import RewardScreen from './screens/RewardScreen';
@@ -110,12 +112,12 @@ function Account() {
         }}>
         <Stack.Screen name="Account" component={AccountScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen options={{
-           headerLeft: null,  
-            headerShown: false
-          }}  name="User" component={UserScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="User" component={UserScreen} />
         <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
         <Stack.Screen name="Profile" component={MyProfileScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="Avaliable Reward" component={RedeemedRewardScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="Used Reward" component={UsedRewardScreen} />
+        <Stack.Screen name="Redeemed Reward" component={CoupponScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

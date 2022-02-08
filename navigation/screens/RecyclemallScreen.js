@@ -86,7 +86,7 @@ export default function RecyclemallScreen({ navigation }) {
                     style={{
                         height: 150,
                         margin: 10,
-                        borderColor: 'grey',
+                        borderColor: 'dimgrey',
                         borderWidth: 1,
                         borderRadius: 10,
                     }} onPress={onParnShopPress}>
@@ -110,7 +110,7 @@ export default function RecyclemallScreen({ navigation }) {
                     style={{
                         height: 150,
                         margin: 10,
-                        borderColor: 'grey',
+                        borderColor: 'dimgrey',
                         borderWidth: 1,
                         borderRadius: 10,
                     }} onPress={onWellcomePress}>
@@ -134,7 +134,7 @@ export default function RecyclemallScreen({ navigation }) {
                     style={{
                         height: 150,
                         margin: 10,
-                        borderColor: 'grey',
+                        borderColor: 'dimgrey',
                         borderWidth: 1,
                         borderRadius: 10,
                     }} onPress={onFortressPress}>

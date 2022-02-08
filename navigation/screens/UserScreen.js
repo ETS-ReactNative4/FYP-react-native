@@ -17,6 +17,10 @@ export default function UserScreen({ navigation }) {
         navigation.navigate('Profile');
     }
 
+    const onRedeemedRwardPressed = () => {
+        navigation.navigate('Avaliable Reward');
+    }
+
     const onContactUsPressed = () => {
         Alert.alert("Contact Us", "Tel: 12345678 \n Email: erecycle@gmail.com");
     }
@@ -24,9 +28,9 @@ export default function UserScreen({ navigation }) {
     return (
 
         <View style={{
-            flex:1,
-            backgroundColor:'seagreen'
-            }}>
+            flex: 1,
+            backgroundColor: 'seagreen'
+        }}>
             <View style={{
                 flex: 1.2,
                 backgroundColor: 'seagreen',
@@ -38,9 +42,9 @@ export default function UserScreen({ navigation }) {
                 <Text style={styles.username}>Username</Text>
 
                 <View style={{
-                    borderRadius: 20,
+                    borderRadius: 15,
                     margin: 2,
-                    backgroundColor: '#F2F2F2',
+                    backgroundColor: '#1d5837',
                 }}>
                     <Text style={styles.recyclePoints}>100 Recycle Points</Text>
                 </View>
@@ -51,8 +55,8 @@ export default function UserScreen({ navigation }) {
                 style={{
                     backgroundColor: '#F2F2F2',
                     flex: 0.5,
-                   borderTopLeftRadius: 15,
-                   borderTopRightRadius: 15,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
 
                 }}>
 
@@ -65,7 +69,7 @@ export default function UserScreen({ navigation }) {
                 </Ripple>
 
                 <Ripple
-                    //onPress={}
+                    onPress={onRedeemedRwardPressed}
                     style={styles.acFunctionBtn}>
                     <Ionicons name="gift-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>Redeemed Rewards</Text>
@@ -81,12 +85,13 @@ export default function UserScreen({ navigation }) {
                 </Ripple>
 
             </ScrollView>
-            <View style={{ 
-                paddingBottom: 5, 
-                alignItems: 'center', 
-                justifyContent: 'flex-end', 
+            <View style={{
+                paddingBottom: 5,
+                alignItems: 'center',
+                justifyContent: 'flex-end',
                 flex: 1,
-                backgroundColor: '#F2F2F2' }}>
+                backgroundColor: '#F2F2F2'
+            }}>
 
                 <Ripple
                     onPress={logOutPresssed}
@@ -147,8 +152,8 @@ const styles = StyleSheet.create({
     },
     recyclePoints: {
         fontSize: 15,
-        padding: 5,
-        color: 'seagreen'
+        padding: 6,
+        color: 'white'
     }
 
 })

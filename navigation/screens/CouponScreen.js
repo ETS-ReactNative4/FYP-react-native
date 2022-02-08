@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, StatusBar } from 'react-native';
 import QRCode from '../../assets/images/rickRollQRCode.png'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Ripple from 'react-native-material-ripple';
@@ -10,6 +10,7 @@ export default function CoupponScreen({route, navigation }) {
 
     return (
         <View style={{justifyContent: 'center'}}>
+            <StatusBar barStyle="dark-content" backgroundColor="seagreen" />
             <Text style={styles.text}>{JSON.parse(JSON.stringify(rewardName))}</Text>
             <Image source={QRCode} style={styles.QRCode}/>
         </View>
