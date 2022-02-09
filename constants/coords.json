@@ -1,7 +1,7 @@
 {
     "coordinates":[
-    {"name":"1", "latitude": 22.3179753, "longitude": 114.2129413888889, "pic":"../assests/marker_icon.png"},
-    {"name":"2", "latitude": 22.3179753, "longitude": 114.2129413888889, "pic":"../assests/station_icon.png"},
-    {"name":"3", "latitude": 22.3179753, "longitude": 114.2129413888889, "pic":"../assests/marker_icon.png"}
+    {"name":"1", "latitude": 22.3179753, "longitude": 114.2129413888889, "pic":"normal"},
+    {"name":"2", "latitude": 22.285062, "longitude": 114.218407, "pic":"station"},
+    {"name":"3", "latitude": 22.334611, "longitude": 114.156225, "pic":"normal"}
     ]
 }
