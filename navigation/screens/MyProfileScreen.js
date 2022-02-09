@@ -6,6 +6,7 @@ import CustomButton from '../../CustomButton/CutomButton';
 import { TextInput } from 'react-native-gesture-handler';
 import { useForm, Controller } from 'react-hook-form';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ripple from 'react-native-material-ripple';
 
 export default function MyProfileScreen({ navigation }) {
 
@@ -108,11 +109,11 @@ export default function MyProfileScreen({ navigation }) {
                     )}
                 />
 
-                <Pressable
+                <Ripple
                     onPress={onChangePasswordPressed}
                     style={styles.changePWD}>
                     <Text style={styles.changePWDtxt}>Change Password</Text>
-                </Pressable>
+                </Ripple>
 
                 <CustomButton text="Save" onPress={handleSubmit(onSaveChangesPressed)} />
 

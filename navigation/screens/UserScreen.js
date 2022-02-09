@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert} from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, ImageBackground, StatusBar } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyProfileScreen from './MyProfileScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import Ripple from 'react-native-material-ripple';
+import BackGroundPattern from '../../assets/images/BackGrounfPattern.jpg'
 
 export default function UserScreen({ navigation }) {
 
@@ -16,71 +17,111 @@ export default function UserScreen({ navigation }) {
         navigation.navigate('Profile');
     }
 
+    const onRedeemedRwardPressed = () => {
+        navigation.navigate('Avaliable Reward');
+    }
+
     const onContactUsPressed = () => {
         Alert.alert("Contact Us", "Tel: 12345678 \n Email: erecycle@gmail.com");
     }
 
     return (
-        
-        <>
-            <View style={{
-                backgroundColor: 'seagreen',
-                 alignItems: 'center', 
-                 paddingTop: 20 ,}}>
-             <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
-            </View>
+ 
+        <View style={{
+            flex: 1,
+            backgroundColor: 'seagreen'
+        }}>
+            <StatusBar barStyle="dark-content" backgroundColor="seagreen" />
+            <ImageBackground source={BackGroundPattern} style={{
+                flex: 1,
+                resizeMode: 'cover',
+                justifyContent: 'center',
+            }}>
 
-            <View>
+                <View style={{
+                    flex: 1.2,
+                    alignItems: 'center',
+                    paddingTop: 20,
+                    justifyContent: 'center'
+                }}>
+                    <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
+                    <Text style={styles.username}>Username</Text>
 
-            <Pressable
+                    <View style={{
+                        borderRadius: 15,
+                        margin: 2,
+                        backgroundColor: '#1d5837',
+                    }}>
+                        <Text style={styles.recyclePoints}>100 Recycle Points</Text>
+                    </View>
+                </View>
+            </ImageBackground>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                    backgroundColor: '#F2F2F2',
+                    flex: 1,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+
+                }}>
+
+                <Ripple
                     onPress={onMyProfilePressed}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="person-sharp" size={30} color="seagreen" />
+                    <Ionicons name="person-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>My Profile</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Pressable>
+                </Ripple>
 
-                <Pressable
-                    //onPress={}
+                <Ripple
+                    onPress={onRedeemedRwardPressed}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="gift-sharp" size={30} color="seagreen" />
+                    <Ionicons name="gift-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>Redeemed Rewards</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Pressable>
+                </Ripple>
 
-                <Pressable
+                <Ripple
                     onPress={onContactUsPressed}
                     style={styles.acFunctionBtn}>
-                    <Ionicons name="call-sharp" size={30} color="seagreen" />
+                    <Ionicons name="call-outline" size={30} color="dimgrey" />
                     <Text style={styles.acFunctionTxt}>Contact Us</Text>
                     <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Pressable>
+                </Ripple>
 
-            </View>
-            <View style={{paddingBottom: 5, alignItems: 'center', justifyContent: 'flex-end', flex: 1}}>
+            </ScrollView>
+            <View style={{
+                paddingBottom: 5,
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                flex: 1,
+                backgroundColor: '#F2F2F2'
+            }}>
 
-                <Pressable
+                <Ripple
                     onPress={logOutPresssed}
                     style={styles.container}>
                     <Ionicons name="log-out-sharp" size={17} color="whitesmoke" />
                     <Text style={styles.text}>Log Out</Text>
-                </Pressable>
+                </Ripple>
 
             </View>
-        </>   
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        alignSelf: 'center',
+        width: '95%',
         backgroundColor: 'seagreen',
         padding: 15,
         marginVertical: 5,
         alignItems: 'center',
-        borderRadius: 5 ,
+        borderRadius: 15,
         flexDirection: 'row',
-        justifyContent: "space-between",
+        justifyContent: 'center'
     },
     text: {
         fontWeight: 'bold',
@@ -88,30 +129,36 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     icon: {
-        width: 150,
-        height: 150,
+        width: 90,
+        height: 90,
         borderRadius: 150 / 2,
-        overflow: "hidden" 
+        overflow: "hidden"
     },
     username: {
         margin: 10,
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: 'bold',
         color: 'whitesmoke',
     },
     acFunctionBtn: {
-        paddingTop: 30,
+        flex: 1,
+        paddingTop: 15,
+        paddingBottom: 15,
         width: '100%',
-        marginLeft: 10,
+        paddingLeft: 10,
         alignItems: 'center',
         flexDirection: 'row',
-
     },
-    acFunctionTxt:{
+    acFunctionTxt: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'dimgrey',
         paddingLeft: 10,
+    },
+    recyclePoints: {
+        fontSize: 15,
+        padding: 6,
+        color: 'white'
     }
-    
+
 })
