@@ -17,11 +17,10 @@ import UserScreen from './screens/UserScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
 import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import RedeemedRewardScreen from './screens/RedeemedRewardScreen.js';
-import UsedRewardScreen from './screens/UsedRewardScreen';
 
 import RecyclemallScreen from './screens/RecyclemallScreen';
 import RewardScreen from './screens/RewardScreen';
-import CoupponScreen from './screens/CouponScreen';
+import CouponScreen from './screens/CouponScreen';
 //Screen names
 const homeName = "Home";
 const AIName = "AI Identify";
@@ -116,8 +115,7 @@ function Account() {
         <Stack.Screen name="Change Password" component={ChangePasswordScreen} />
         <Stack.Screen name="Profile" component={MyProfileScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Avaliable Reward" component={RedeemedRewardScreen} />
-        <Stack.Screen options={{ headerShown: false }} name="Used Reward" component={UsedRewardScreen} />
-        <Stack.Screen name="Redeemed Reward" component={CoupponScreen} />
+        <Stack.Screen name="Redeemed Reward" component={CouponScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -134,7 +132,7 @@ function RecycleMall() {
         }}>
         <Stack.Screen name="Recycle Mall" component={RecyclemallScreen} />
         <Stack.Screen name="Reward" component={RewardScreen} />
-        <Stack.Screen name="Redeemed Reward" component={CoupponScreen} />
+        <Stack.Screen name="Redeemed Reward" component={CouponScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

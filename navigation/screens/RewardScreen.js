@@ -1,9 +1,5 @@
 import * as React from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
-import profilePic from '../../assets/images/user.png';
-import ParknShopIcon from '../../assets/images/ParknShopIcon.png';
-import WellcomeIcon from '../../assets/images/wellcomeIcon.jpg';
-import FortressIcon from '../../assets/images/FortressIcon.jpg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Ripple from 'react-native-material-ripple';
 
@@ -20,7 +16,8 @@ export default function RewardScreen({ route, navigation }) {
                     text: "Yes",
                     onPress: () => 
                     navigation.navigate('Redeemed Reward',{
-                        rewardName: JSON.parse(JSON.stringify(rewardName))
+                        rewardName: JSON.parse(JSON.stringify(rewardName)),
+                        redeemID:  JSON.parse(JSON.stringify(redeemID))
                     }),
                 },
                 { text: "No" }
@@ -29,7 +26,7 @@ export default function RewardScreen({ route, navigation }) {
 
     }
 
-    const { rewardName, requiredPoints, rewardPic, description } = route.params;
+    const { rewardName, requiredPoints, rewardPic, description, redeemID } = route.params;
 
     return (
         <ScrollView style={{ flex: 1 }}>
