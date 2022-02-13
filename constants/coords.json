@@ -1,7 +1,7 @@
 {
     "coordinates":[
-    {"name":"1", "latitude": 22.3179753, "longitude": 114.2129413888889, "pic":"normal"},
-    {"name":"2", "latitude": 22.285062, "longitude": 114.218407, "pic":"station"},
-    {"name":"3", "latitude": 22.334611, "longitude": 114.156225, "pic":"normal"}
+    {"id":"1", "latitude": 22.32064983676085, "longitude": 114.2075662204981, "pic":"normal" , "name":"Kwun Tong Community Green Station", "address":"27 Sheung Yee Rd, Kowloon Bay"},
+    {"id":"2", "latitude": 22.29803942655175, "longitude": 114.17685208888942, "pic":"station","name":"Hong Kong Plastics Recycling Association Co Ltd", "address":"Houston Centre  Unit 289 2/F, 63 Mody Rd, Tsim Sha Tsui"},
+    {"id":"3", "latitude": 22.284658964705105, "longitude": 114.21187155625717, "pic":"normal", "name":"GREEN@QUARRY BAY", "address":"1010, Shop 130 & 111, East Pavilion, 1056 King's Road, Quarry Bay"}
     ]
 }
