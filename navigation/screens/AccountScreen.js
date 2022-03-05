@@ -20,18 +20,27 @@ export default function AccountScreen({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
 
     const onSignInPressed = (data) => {
-        fetch('',{
 
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            alert(responseJson);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+       // navigation.navigate('User')
 
-        navigation.navigate('User')
+        fetch('http://3.230.208.68/FYP_api/login.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                username: UserName,
+                userpassword: UserPassword
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                alert(res.message);
+            })
+            .done();
+
     }
 
     const onCreateAccountPressed = () => {
@@ -50,16 +59,14 @@ export default function AccountScreen({ navigation }) {
                     control={control}
                     name="username"
                     rules={{
-                        required: 'Username is required',
                         minLength: { value: 3, message: 'Username should be longer than 3 characters' }
                     }}
-                    render={({ field: { onBlur }, fieldState: { error } }) => (
+                    render={({ field: { value, }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={UserName}
+                                value = {value}
                                 onChangeText={text => setUserName(text)}
-                                onBlur={onBlur}
                                 placeholder="Username"
                             />
                             {error && (
@@ -74,7 +81,7 @@ export default function AccountScreen({ navigation }) {
                 <Controller
                     control={control}
                     name="userpassword"
-                    rules={{ required: 'Password is required' }}
+                    rules={{ }}
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
