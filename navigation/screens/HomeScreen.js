@@ -50,8 +50,10 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject 
   },
+  markerCallout: {
+      width:150
+  },
     markerTitle: {
-    width:200,
     fontWeight:'bold',
   },
   markerDesc:{
