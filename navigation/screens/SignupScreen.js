@@ -8,10 +8,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function SignupScreen({ navigation }) {
 
+    const [UserName, setUserName] = useState(''); 
+
+    const [UserEmail, setUserEmail] = useState(''); 
+
+    const [UserPassword, setUserPassword] = useState(''); 
+    
+
     const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
     const onSignUpPressed = () => {
-        Alert.alert("Account", "Your Account Has Been Created");
+        Alert.alert("Account", UserName);
     }
 
     const onHaveAnAcount = () => {
@@ -35,12 +42,12 @@ export default function SignupScreen({ navigation }) {
                         maxLength: { value: 24, message: 'Username should be shorter than 24 characters' }
                     }
                     }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    render={({ field: { onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
+                                value={UserName}
+                                onChangeText={text => setUserName(text)}
                                 onBlur={onBlur}
                                 placeholder="Username"
                             />
@@ -52,6 +59,7 @@ export default function SignupScreen({ navigation }) {
                     )}
                 />
 
+
                 <Controller
                     control={control}
                     name="useremail"
@@ -60,12 +68,12 @@ export default function SignupScreen({ navigation }) {
                         pattern: { value: EMAIL_REGEX, message: 'Invalid Email' },
                     }
                     }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    render={({ field: { onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
+                                value={UserEmail}
+                                onChangeText={text => setUserEmail(text)}
                                 onBlur={onBlur}
                                 placeholder="Email address"
                             />
@@ -86,12 +94,12 @@ export default function SignupScreen({ navigation }) {
                         maxLength: { value: 24, message: 'Password should be shorter than 24 characters' }
                     }
                     }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                    render={({ field: { onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
+                                value={UserPassword}
+                                onChangeText={text => setUserPassword(text)}
                                 onBlur={onBlur}
                                 placeholder="Password"
                                 secureTextEntry={true}
@@ -129,7 +137,6 @@ export default function SignupScreen({ navigation }) {
                         </>
                     )}
                 />
-
                 <CustomButton text="Register" onPress={handleSubmit(onSignUpPressed)} />
 
                 <Pressable
