@@ -19,6 +19,8 @@ export default function AccountScreen({ navigation }) {
 
     const { control, handleSubmit, formState: { errors } } = useForm();
 
+    const [disabled, setDisabled] = useState(false);
+
     const onSignInPressed = (data) => {
 
        // navigation.navigate('User')
@@ -39,8 +41,12 @@ export default function AccountScreen({ navigation }) {
             .then((res) => {
                 alert(res.message);
             })
-            .done();
-
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                alert("Connection Error");
+            });
     }
 
     const onCreateAccountPressed = () => {
@@ -104,7 +110,9 @@ export default function AccountScreen({ navigation }) {
                 <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} />
 
                 <Pressable
-                    onPress={onCreateAccountPressed}>
+                    onPress={onCreateAccountPressed}
+                    disabled={false}
+                    >                       
                     <Text style={{
                         color: 'grey',
                         marginVertical: 5,
