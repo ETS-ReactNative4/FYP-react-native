@@ -1,24 +1,72 @@
 import * as React from 'react';
 import { useState } from "react";
-import { View, Text, Image, Pressable, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
-import CustomInput from '../../CustomInput';
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, TouchableOpacity,Alert } from 'react-native';
+import Logo from '../../assets/images/logo.png';
 import CustomButton from '../../CustomButton/CutomButton';
+import UserScreen from './UserScreen';
+import { TextInput } from 'react-native-gesture-handler';
+import Ripple from 'react-native-material-ripple';
 import { useForm, Controller } from 'react-hook-form';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
+
 
 export default function SignupScreen({ navigation }) {
 
-    const [UserName, setUserName] = useState(''); 
 
-    const [UserEmail, setUserEmail] = useState(''); 
+    const [UserName, setUserName] = useState('');
 
-    const [UserPassword, setUserPassword] = useState(''); 
-    
+    const [UserPassword, setUserPassword] = useState('');
 
-    const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    const [confirmUserPassword, setConfirmUserPassword] = useState('');
+
+    const [disabled, setDisabled] = useState(false);
+
 
     const onSignUpPressed = () => {
-        Alert.alert("Account", UserName);
+
+    setDisabled(true);
+
+    fetch('http://3.230.208.68/FYP_api/register.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({
+            username: UserName,
+            userpassword: UserPassword,   
+            confirmpassword: confirmUserPassword
+        })
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            Alert.alert(
+                'Alert',
+                res.message,
+                [
+                  {text: 'OK', onPress: () => setDisabled(false)},
+                ],
+                {cancelable: false},
+              );
+        })
+        .catch((error) => {
+            console.log("error fetching data")
+            console.log(error)
+            console.log(error.message) // Server can't be reached!
+            Alert.alert(
+                'Alert',
+                "Connection Error",
+                [
+                  {text: 'OK', onPress: () => setDisabled(false)},
+                ],
+                {cancelable: false},
+              );
+        });
+       
+
+        
     }
 
     const onHaveAnAcount = () => {
@@ -33,22 +81,22 @@ export default function SignupScreen({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
                 <Text style={styles.title}>Create an Account</Text>
+
+
+
+
                 <Controller
                     control={control}
                     name="username"
                     rules={{
-                        required: 'Username is required',
-                        minLength: { value: 3, message: 'Username should be longer than 3 characters' },
-                        maxLength: { value: 24, message: 'Username should be shorter than 24 characters' }
-                    }
-                    }
-                    render={({ field: { onBlur }, fieldState: { error } }) => (
+                        minLength: { value: 3, message: 'Username should be longer than 3 characters' }
+                    }}
+                    render={({ field: { value, }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={UserName}
+                                value={value}
                                 onChangeText={text => setUserName(text)}
-                                onBlur={onBlur}
                                 placeholder="Username"
                             />
                             {error && (
@@ -62,39 +110,9 @@ export default function SignupScreen({ navigation }) {
 
                 <Controller
                     control={control}
-                    name="useremail"
-                    rules={{
-                        required: 'Email Address is required',
-                        pattern: { value: EMAIL_REGEX, message: 'Invalid Email' },
-                    }
-                    }
-                    render={({ field: { onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={UserEmail}
-                                onChangeText={text => setUserEmail(text)}
-                                onBlur={onBlur}
-                                placeholder="Email address"
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
-                />
-
-                <Controller
-                    control={control}
                     name="userpassword"
-                    rules={{
-                        required: 'Password is required',
-                        minLength: { value: 8, message: 'Password should be longer than 8 characters' },
-                        maxLength: { value: 24, message: 'Password should be shorter than 24 characters' }
-                    }
-                    }
-                    render={({ field: { onBlur }, fieldState: { error } }) => (
+                    rules={{}}
+                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
@@ -109,35 +127,40 @@ export default function SignupScreen({ navigation }) {
                                     {error.message || 'Error'}
                                 </Text>)}
                         </>
-                    )}
+                    )
+                    }
                 />
 
                 <Controller
                     control={control}
-                    name="userconfirmpassword"
-                    rules={{
-                        validate: value => 
-                            value === pwd  || 'Password do not match',
-                        }
-                    }
+                    name="confirmuserpassword"
+                    rules={{}}
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
+                                value={confirmUserPassword}
+                                onChangeText={text => setConfirmUserPassword(text)}
                                 onBlur={onBlur}
                                 placeholder="Confirm Password"
                                 secureTextEntry={true}
+                                touchableInactive={false}
                             />
                             {error && (
                                 <Text style={{ color: 'red' }}>
                                     {error.message || 'Error'}
                                 </Text>)}
                         </>
-                    )}
+                    )
+                    }
                 />
-                <CustomButton text="Register" onPress={handleSubmit(onSignUpPressed)} />
+
+            <TouchableOpacity disabled={disabled}
+
+                    onPress={onSignUpPressed}
+                    style={styles.container}>
+                    <Text style={styles.text}>Register</Text>
+                </TouchableOpacity>
 
                 <Pressable
                     onPress={onHaveAnAcount}>
@@ -167,6 +190,20 @@ const styles = StyleSheet.create({
 
         padding: 10,
         marginVertical: 5,
-    }
+    },
+    container:{
+        backgroundColor: 'seagreen',
+        width: '80%',
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+
+    },
+    text:{
+        fontWeight: 'bold',
+        color: 'white',
+    },
+
 
 });

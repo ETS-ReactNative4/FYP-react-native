@@ -25,7 +25,7 @@ export default function AccountScreen({ navigation }) {
 
        // navigation.navigate('User')
 
-        fetch('http://3.230.208.68/FYP_api/login.php', {
+        fetch('http://119.236.195.94/FYP_api/login.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
