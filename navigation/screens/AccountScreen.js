@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
-import { View, Text, Image, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import Logo from '../../assets/images/logo.png';
 import CustomButton from '../../CustomButton/CutomButton';
 import SignupScreen from './SignupScreen';
@@ -23,9 +23,10 @@ export default function AccountScreen({ navigation }) {
 
     const onSignInPressed = (data) => {
 
-       // navigation.navigate('User')
 
-        fetch('http://3.230.208.68/FYP_api/login.php', {
+        setDisabled(true);
+
+        fetch('http://3.217.241.125/FYP_api/login.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -39,17 +40,31 @@ export default function AccountScreen({ navigation }) {
         })
             .then((response) => response.json())
             .then((res) => {
-                if (res.message == "success"){
+                if (res.message == "success") {
                     navigation.navigate('User');
-                }else{
-                    alert(res.message);
-                }   
+                } else {
+                    Alert.alert(
+                        'Alert',
+                        res.message,
+                        [
+                            { text: 'OK', onPress: () => setDisabled(false) },
+                        ],
+                        { cancelable: false },
+                    );
+                }
             })
             .catch((error) => {
                 console.log("error fetching data")
                 console.log(error)
                 console.log(error.message) // Server can't be reached!
-                alert("Connection Error");
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
             });
     }
 
@@ -75,7 +90,7 @@ export default function AccountScreen({ navigation }) {
                         <>
                             <TextInput
                                 style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value = {value}
+                                value={value}
                                 onChangeText={text => setUserName(text)}
                                 placeholder="Username"
                             />
@@ -91,7 +106,7 @@ export default function AccountScreen({ navigation }) {
                 <Controller
                     control={control}
                     name="userpassword"
-                    rules={{ }}
+                    rules={{}}
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <>
                             <TextInput
@@ -111,12 +126,17 @@ export default function AccountScreen({ navigation }) {
                     }
                 />
 
-                <CustomButton text="Sign In" onPress={handleSubmit(onSignInPressed)} />
+                <TouchableOpacity
+                    disabled={disabled}
+                    onPress={onSignInPressed}
+                    style={styles.container}>
+                    <Text style={styles.text}>Login</Text>
+                </TouchableOpacity>
 
                 <Pressable
                     onPress={onCreateAccountPressed}
                     disabled={false}
-                    >                       
+                >
                     <Text style={{
                         color: 'grey',
                         marginVertical: 5,
@@ -144,6 +164,19 @@ const styles = StyleSheet.create({
 
         padding: 10,
         marginVertical: 5,
-    }
+    },
+    container: {
+        backgroundColor: 'seagreen',
+        width: '80%',
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+
+    },
+    text: {
+        fontWeight: 'bold',
+        color: 'white',
+    },
 
 });

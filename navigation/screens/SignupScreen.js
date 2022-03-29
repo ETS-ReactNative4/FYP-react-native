@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
-import { View, Text, Image, Pressable, StyleSheet, ScrollView, TouchableOpacity,Alert } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import Logo from '../../assets/images/logo.png';
 import CustomButton from '../../CustomButton/CutomButton';
 import UserScreen from './UserScreen';
@@ -25,48 +25,48 @@ export default function SignupScreen({ navigation }) {
 
     const onSignUpPressed = () => {
 
-    setDisabled(true);
+        setDisabled(true);
 
-    fetch('http://3.230.208.68/FYP_api/register.php', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+        fetch('http://3.217.241.125/FYP_api/signup.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
 
-        },
-        body: JSON.stringify({
-            username: UserName,
-            userpassword: UserPassword,   
-            confirmpassword: confirmUserPassword
+            },
+            body: JSON.stringify({
+                username: UserName,
+                userpassword: UserPassword,
+                confirmpassword: confirmUserPassword
+            })
         })
-    })
-        .then((response) => response.json())
-        .then((res) => {
-            Alert.alert(
-                'Alert',
-                res.message,
-                [
-                  {text: 'OK', onPress: () => setDisabled(false)},
-                ],
-                {cancelable: false},
-              );
-        })
-        .catch((error) => {
-            console.log("error fetching data")
-            console.log(error)
-            console.log(error.message) // Server can't be reached!
-            Alert.alert(
-                'Alert',
-                "Connection Error",
-                [
-                  {text: 'OK', onPress: () => setDisabled(false)},
-                ],
-                {cancelable: false},
-              );
-        });
-       
+            .then((response) => response.json())
+            .then((res) => {
+                Alert.alert(
+                    'Alert',
+                    res.message,
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
+            });
 
-        
+
+
     }
 
     const onHaveAnAcount = () => {
@@ -155,8 +155,8 @@ export default function SignupScreen({ navigation }) {
                     }
                 />
 
-            <TouchableOpacity disabled={disabled}
-
+                <TouchableOpacity
+                    disabled={disabled}
                     onPress={onSignUpPressed}
                     style={styles.container}>
                     <Text style={styles.text}>Register</Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 5,
     },
-    container:{
+    container: {
         backgroundColor: 'seagreen',
         width: '80%',
         padding: 15,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
 
     },
-    text:{
+    text: {
         fontWeight: 'bold',
         color: 'white',
     },
