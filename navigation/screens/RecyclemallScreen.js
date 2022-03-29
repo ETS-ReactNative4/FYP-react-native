@@ -1,37 +1,55 @@
-import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableHighlight } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
 import profilePic from '../../assets/images/user.png';
-import ParknShopIcon from '../../assets/images/ParknShopIcon.png';
-import WellcomeIcon from '../../assets/images/wellcomeIcon.jpg';
 import FortressIcon from '../../assets/images/FortressIcon.jpg';
+import bottle from '../../assets/images/bottle.jpg';
+import tshirt from '../../assets/images/t-shirt.jpg';
+import bag from '../../assets/images/bag.jpg';
+import unbrella from '../../assets/images/umbrella.jpg';
 import Ripple from 'react-native-material-ripple';
+import { TextInput } from 'react-native-gesture-handler';
 
-export default function RecyclemallScreen({ navigation }) {
+export default function RecyclemallScreen({navigation }) {
 
-    const onParnShopPress = (data) => {
+    const [RecyclePoints, setRecyclePoints] = useState('100');    
 
+    const onBottlePress = (data) => {
+        setRecyclePoints(RecyclePoints - 100);
         navigation.navigate('Reward', {
-            rewardName: 'PARKnSHOP Gift Coupon | HK$50',
+            redeemID: '202202014001',
+            rewardName: 'Eco Bottle',
             requiredPoints: 100,
-            rewardPic: require('../../assets/images/ParknShopIcon.png'),
+            rewardPic: require('../../assets/images/bottle.jpg'),
             description: '1.    During the promotion period, eligible MoneyBack members shop at PARKnSHOP eShop or PARKnSHOP Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
         })
     }
 
-    const onWellcomePress = (data) => {
+    const onTShirtPress = (data) => {
         navigation.navigate('Reward', {
-            rewardName: 'Wellcome Gift Coupon | HK$100',
+            redeemID: '202202014002',
+            rewardName: 'Eco Clothes',
             requiredPoints: 150,
-            rewardPic: require('../../assets/images/wellcomeIcon.jpg'),
+            rewardPic: require('../../assets/images/t-shirt.jpg'),
             description: '1.    During the promotion period, eligible MoneyBack members shop at Wellcome eShop or Wellcome Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
         })
     }
 
-    const onFortressPress = (data) => {
+    const onBagPress = (data) => {
         navigation.navigate('Reward', {
-            rewardName: 'Fortress Voucher | HK$100',
+            redeemID: '202202014003',
+            rewardName: 'Recycle Bag',
             requiredPoints: 175,
-            rewardPic: require('../../assets/images/FortressIcon.jpg'),
+            rewardPic: require('../../assets/images/bag.jpg'),
+            description: '1.    During the promotion period, eligible MoneyBack members shop at Fortress eShop or Fortress Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
+        })
+    }
+
+    const onUmbrellaPress = (data) => {
+        navigation.navigate('Reward', {
+            redeemID: '202202014004',
+            rewardName: 'Eco Umbrella',
+            requiredPoints: 200,
+            rewardPic: require('../../assets/images/umbrella.jpg'),
             description: '1.    During the promotion period, eligible MoneyBack members shop at Fortress eShop or Fortress Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
         })
     }
@@ -53,11 +71,12 @@ export default function RecyclemallScreen({ navigation }) {
                 borderRadius: 10
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                    <Text style={styles.username}>Username</Text>
-                <View style={{ flexDirection: 'column',
-                                justifyContent: 'flex-end',
-                                marginBottom: 5
-                                }}>
+                <Text style={styles.username}>Username</Text>
+                <View style={{
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    marginBottom: 5
+                }}>
                     <Text style={{
                         paddingRight: 5,
                         paddingTop: 85,
@@ -68,7 +87,7 @@ export default function RecyclemallScreen({ navigation }) {
                     }}>
                         Recycle Points
                     </Text>
-                    <Text style={styles.text}>100</Text>
+                    <Text style={styles.text} >{RecyclePoints}</Text>
                 </View>
             </View>
 
@@ -83,73 +102,60 @@ export default function RecyclemallScreen({ navigation }) {
                 }}>
 
                 <Ripple
-                    style={{
-                        height: 150,
-                        margin: 10,
-                        borderColor: 'dimgrey',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                    }} onPress={onParnShopPress}>
+                    style={styles.reward}
+                    onPress={onBottlePress}>
                     <View style={{
                         flexDirection: 'row',
 
                     }}>
-                        <Image source={ParknShopIcon} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>PARKnSHOP Gift Coupon | HK$50 </Text>
-                        <View style={{
-                            paddingTop: 100,
-                            alignSelf: 'flex-end',
-                            margin: 5
-                        }}>
+                        <Image source={bottle} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Eco Bottle</Text>
+                        <View style={styles.requiredPtView}>
                             <Text>100 Points</Text>
                         </View>
                     </View>
                 </Ripple>
 
                 <Ripple
-                    style={{
-                        height: 150,
-                        margin: 10,
-                        borderColor: 'dimgrey',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                    }} onPress={onWellcomePress}>
+                    style={styles.reward} 
+                    onPress={onTShirtPress}>
                     <View style={{
                         flexDirection: 'row',
 
                     }}>
-                        <Image source={WellcomeIcon} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Wellcome Gift Coupon | HK$100 </Text>
-                        <View style={{
-                            paddingTop: 100,
-                            alignSelf: 'flex-end',
-                            margin: 5
-                        }}>
+                        <Image source={tshirt} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Eco Clothes</Text>
+                        <View style={styles.requiredPtView}>
                             <Text>150 Points</Text>
                         </View>
                     </View>
                 </Ripple>
 
                 <Ripple
-                    style={{
-                        height: 150,
-                        margin: 10,
-                        borderColor: 'dimgrey',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                    }} onPress={onFortressPress}>
+                  style={styles.reward}
+                  onPress={onBagPress}>
                     <View style={{
                         flexDirection: 'row',
 
                     }}>
-                        <Image source={FortressIcon} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Fortress Voucher | HK$100 </Text>
-                        <View style={{
-                            paddingTop: 100,
-                            alignSelf: 'flex-end',
-                            margin: 5
-                        }}>
+                        <Image source={bag} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Recycle Bag </Text>
+                        <View style={styles.requiredPtView}>
                             <Text>175 Points</Text>
+                        </View>
+                    </View>
+                </Ripple>
+
+                <Ripple
+                  style={styles.reward}
+                  onPress={onUmbrellaPress}>
+                    <View style={{
+                        flexDirection: 'row',
+                    }}>
+                        <Image source={unbrella} style={styles.coupocIcon}></Image>
+                        <Text style={styles.productText}>Eco Umbrella</Text>
+                        <View style={styles.requiredPtView}>
+                            <Text>200 Points</Text>
                         </View>
                     </View>
                 </Ripple>
@@ -168,6 +174,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
     },
+    reward: {
+        height: 150,
+        margin: 10,
+        borderColor: 'dimgrey',
+        borderWidth: 1,
+        borderRadius: 10,
+    },
+    requiredPtView: {
+        paddingTop: 100,
+        alignSelf: 'flex-end',
+        margin: 5
+    },
     text: {
         fontSize: 25,
         alignSelf: 'center',
@@ -185,8 +203,8 @@ const styles = StyleSheet.create({
         borderRadius: 70,
     },
     username: {
-        flexDirection: 'row', 
-        justifyContent: 'center', 
+        flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 10,
         flex: 1,
