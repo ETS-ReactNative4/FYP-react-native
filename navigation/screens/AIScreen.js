@@ -7,17 +7,20 @@ import { useIsFocused } from '@react-navigation/native';
 import Canvas from 'react-native-canvas';
 
 const TensorCamera = cameraWithTensors(Camera);
-const modelJSON = require('../../model/model.json');
-const modelWeights = require('../../model/weights.bin');
+const modelJSON = require('../../model/wasteidentifyv2/model.json');
+// model weights
+const modelWeights1 = require('../../model/wasteidentifyv2/group1-shard1of3.bin');
+const modelWeights2 = require('../../model/wasteidentifyv2/group1-shard2of3.bin');
+const modelWeights3 = require('../../model/wasteidentifyv2/group1-shard3of3.bin');
 const { width, height } = Dimensions.get('window');
 
 
 
 const labelMap = {
-    0:{name:'Glass', color:'green'},
-    1:{name:'Metal', color:'yellow'},
-    2:{name:'Paper', color:'blue'},
-    3:{name:'Plastic', color:'brown'},
+    1:{name:'Plastic', color:'brown'},
+    2:{name:'Metal', color:'yellow'},
+    3:{name:'Paper', color:'blue'},
+    4:{name:'Glass', color:'green'},
 }
 
 const styles = StyleSheet.create({
@@ -27,9 +30,13 @@ const styles = StyleSheet.create({
       },
       camera:{
           ...StyleSheet.absoluteFillObject,
+          height:600,
+          width:400,
+          top:50,
       },
       canvas:{
           ...StyleSheet.absoluteFillObject,
+          top:50,
           zIndex: 1000000000,
       },
 });
@@ -57,56 +64,58 @@ export default function AIScreen(navigation){
 
 
     function handleCameraStream(images){
-    //  Loop and detect hands
 
       const loop = async() => {
           const nextImageTensor = await images.next().value;
           if(nextImageTensor !== undefined && nextImageTensor !== null){
-              const resized = tf.image.resizeBilinear(nextImageTensor.expandDims(0),[320,320]);
-              const casted = await resized.cast('float32');
+              const resized = await tf.image.resizeBilinear(nextImageTensor.expandDims(0),[320,320]);
+              //const rotated = await tf.image.rotateWithOffset(resized,-90);
+              const casted = await resized.cast('int32');
+              
               const output = await model.executeAsync(casted);
 
               if(!model && output) throw new Error('No model or image tensor');
               const prediction = await Promise.all(output.map(t => t.array()));
               //const boxes = await output[0].array()
-              const boxes = prediction[2];
-              const classes = prediction[0];
-              const scores = prediction[1];
+              //prediction[0] = scores
+              //prediction[6] = classes
+              //prediction[1] = boxes
+              //console.log(prediction[3]);
+              const boxes = prediction[1];
+              const classes = prediction[6];
+              const scores = prediction[0];
               //console.log(prediction); 
               //model.executeAsync(casted).then((prediction =>{
               //  drawRectangle(prediction,nextImageTensor);
               //}).catch((error) => {
               //  console.log(error);
               //}));
+              drawRectangle(prediction,nextImageTensor,boxes[0],classes[0],scores[0]);
               tf.dispose(nextImageTensor);
               tf.dispose(resized);
               tf.dispose(casted);
               tf.dispose(output);
+              //tf.dispose(rotated);
               tf.dispose(prediction);
-              requestAnimationFrame(() => drawRectangle(prediction,nextImageTensor,boxes,classes,scores));
+              requestAnimationFrame(loop);
           } 
       };
-        isFocused &&
-           setInterval(() => {
-           //    loop();
-            loop();
-           },700); 
+        loop();
     } 
     
 
     function drawRectangle(prediction, nextImageTensor,boxes,classes,scores){
         if(!context.current || !canvas.current){console.log('No context/canvas'); return};
         context.current.clearRect(0,0,width,height);
-        for (let n = 0; n < prediction[0].length; n++) {
+        context.current.strokeRect(0, 0, canvas.current.width,canvas.current.height)
+        for (let n = 0; n < boxes.length; n++) {
                 //console.log('Predicting waste');
-                if(scores[n] >= 0.5){
+                if(scores[n] >= 0.8){
                     const[x,y,boxwidth,boxheight] = boxes[n];
                         //to match the size of camera preview 
-                    const imageWidth = nextImageTensor.shape[1];
-                    const imageHeight = nextImageTensor.shape[0];
                     //console.log(x,y,boxwidth,boxheight);
-                    const scaleWidth = boxwidth * nextImageTensor.shape[0];
-                    const scaleHeight = boxheight * nextImageTensor.shape[1];
+                    const scaleWidth = canvas.current.width / nextImageTensor.shape[1]; 
+                    const scaleHeight = canvas.current.height / nextImageTensor.shape[0]; 
 
                     const flipHorizontal = Platform.OS == 'ios' ? false : true;
 
@@ -126,17 +135,20 @@ export default function AIScreen(navigation){
                     //}
                     //console.log('Waste '+n+'x: '+x+'y: '+y+'width : '+width+'height : '+height);
                     //Scale coordinates based on the ratio calculated
-                    const boundingBoxX = flipHorizontal 
-                    ? canvas.current.width - x * scaleWidth - boxwidth * scaleWidth
-                    : x * scaleWidth;
-                    const boundingBoxY = y * canvas.current.height;
+                    //const boundingBoxX = flipHorizontal ? 
+                    //canvas.current.width - x*canvas.current.width - boxwidth * canvas.current.width 
+                    //: x*scaleWidth;
+                    const boundingBoxX = flipHorizontal ? 
+                    canvas.current.width - y*canvas.current.width - boxheight*canvas.current.width : 
+                    y*canvas.current.width;
+                    const boundingBoxY = x*canvas.current.height;
 
                     //Color each classes with different colors
                     //console.log(classes[n]);
                     //console.log(labelMap[classes[n]]['color']);
                     context.current.strokeStyle = labelMap[classes[n]]['color'];
-                    console.log(boundingBoxX,boundingBoxY,boxwidth*scaleWidth,boxheight*scaleHeight);
-                    context.current.strokeRect(boundingBoxX, boundingBoxY, boxwidth * scaleWidth, boxheight * scaleHeight);
+                    console.log(boundingBoxX, boundingBoxY, boxheight*canvas.current.width, boxwidth*canvas.current.height);
+                    context.current.strokeRect(boundingBoxX, boundingBoxY, boxheight*canvas.current.width, boxwidth*canvas.current.height);
 
                     context.current.fillText(labelMap[classes[n]]['name'],boundingBoxX - 5,boundingBoxY - 5);
                 }
@@ -146,8 +158,8 @@ export default function AIScreen(navigation){
 
    async function handleCanvas(can){ 
        if(can){
-           can.width = width;
-           can.height = height;
+           can.width = 400;
+           can.height = 600;
            console.log(can.width,can.height);
            const ctx = can.getContext('2d');
            ctx.fillStyle = 'white';
@@ -167,7 +179,7 @@ export default function AIScreen(navigation){
 
       async function readyTensorFlow(){
         await tf.ready();
-        setModel(await tf.loadGraphModel(bundleResourceIO(modelJSON, modelWeights)));
+        setModel(await tf.loadGraphModel(bundleResourceIO(modelJSON, [modelWeights1,modelWeights2,modelWeights3])));
       }
 
       readyCamera();
@@ -186,8 +198,8 @@ export default function AIScreen(navigation){
             type={Camera.Constants.Type.back}
             cameraTextureHeight={textureDims.height}
             cameraTextureWidth={textureDims.width}
-            resizeHeight={320}
             resizeWidth={320}
+            resizeHeight={320}
             resizeDepth={3}
             onReady={handleCameraStream}
             autorender={true}
