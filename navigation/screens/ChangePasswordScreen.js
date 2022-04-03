@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useState } from "react";
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import CustomButton from '../../CustomButton/CutomButton';
@@ -10,109 +11,97 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ChangePasswordScreen({ navigation }) {
 
-    const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    
+
+
+    const [oldPassword, setOldPassword] = useState('');
+
+    const [newPassword, setNewPassword] = useState('');
+
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [disabled, setDisabled] = useState(false);
 
     const onSavePressed = () => {
-        Alert.alert("Profile", "Updated Passowrd");
+        setDisabled(true);
+
+        fetch('http://3.217.241.125/FYP_api/updatePassword.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                oldPassword: oldPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                    Alert.alert(
+                        'Alert',
+                        res.message,
+                        [
+                            { text: 'OK', onPress: () => setDisabled(false) },
+                        ],
+                        { cancelable: false },
+                    );                
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
+            });
     }
-
-    const onChangePasswordPressed = () => {
-        navigation.navigate('Change Password');
-    }
-
-    const { control, handleSubmit, watch, formState: { errors } } = useForm();
-
-    const pwd = watch('userpassword');
-
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
                 <Text style={styles.username}>Username</Text>
 
-                <Controller
-                    control={control}
-                    name="useroldpassword"
-                    rules={{
-                        required: 'Password is required',
-                        minLength: { value: 8, message: 'Password should be longer than 8 characters' },
-                        maxLength: { value: 24, message: 'Password should be shorter than 24 characters' }
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Old Password"
-                                secureTextEntry={true}
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={oldPassword}
+                    onChangeText={text => setOldPassword(text)}
+                    placeholder="Old Password"
+                    secureTextEntry={true}
                 />
 
-                <Controller
-                    control={control}
-                    name="userpassword"
-                    rules={{
-                        required: 'Password is required',
-                        minLength: { value: 8, message: 'Password should be longer than 8 characters' },
-                        maxLength: { value: 24, message: 'Password should be shorter than 24 characters' }
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="New Password"
-                                secureTextEntry={true}
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={newPassword}
+                    onChangeText={text => setNewPassword(text)}
+                    placeholder="Old Password"
+                    secureTextEntry={true}
                 />
 
-                <Controller
-                    control={control}
-                    name="userconfirmpassword"
-                    rules={{
-                        validate: value =>
-                            value === pwd || 'Password do not match',
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Confirm Password"
-                                secureTextEntry={true}
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={confirmPassword}
+                    onChangeText={text => setConfirmPassword(text)}
+                    placeholder="Confrim Password"
+                    secureTextEntry={true}
                 />
 
 
 
-                <CustomButton text="Save" onPress={handleSubmit(onSavePressed)} />
+
+                <TouchableOpacity
+                    disabled={disabled}
+                    onPress={onSavePressed}
+                    style={styles.container}>
+                    <Text style={styles.text}>Login</Text>
+                </TouchableOpacity>
 
             </View>
         </ScrollView>
@@ -161,6 +150,18 @@ const styles = StyleSheet.create({
     changePWDtxt: {
         fontWeight: 'bold',
         color: 'seagreen',
-    }
+    },
+    container: {
+        backgroundColor: 'seagreen',
+        width: '80%',
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    text: {
+        fontWeight: 'bold',
+        color: 'white',
+    },
 
 });

@@ -14,10 +14,7 @@ export default function AccountScreen({ navigation }) {
 
     const [UserName, setUserName] = useState('');
 
-
     const [UserPassword, setUserPassword] = useState('');
-
-    const { control, handleSubmit, formState: { errors } } = useForm();
 
     const [disabled, setDisabled] = useState(false);
 
@@ -41,7 +38,14 @@ export default function AccountScreen({ navigation }) {
             .then((response) => response.json())
             .then((res) => {
                 if (res.message == "success") {
-                    navigation.navigate('User');
+                    Alert.alert(
+                        'Alert',
+                        'Login Successful',
+                        [
+                            { text: 'OK', onPress: () => {setDisabled(false), navigation.navigate('User'); }},
+                        ],
+                        { cancelable: false },
+                    );                  
                 } else {
                     Alert.alert(
                         'Alert',
@@ -80,51 +84,20 @@ export default function AccountScreen({ navigation }) {
                     E-Recycle
                 </Text>
 
-                <Controller
-                    control={control}
-                    name="username"
-                    rules={{
-                        minLength: { value: 3, message: 'Username should be longer than 3 characters' }
-                    }}
-                    render={({ field: { value, }, fieldState: { error } }) => (
-                        <>
                             <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
+                                style={styles.input}
+                                value={UserName}
                                 onChangeText={text => setUserName(text)}
                                 placeholder="Username"
                             />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
-                />
 
-
-                <Controller
-                    control={control}
-                    name="userpassword"
-                    rules={{}}
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
                             <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
+                                style={styles.input}
                                 value={UserPassword}
                                 onChangeText={text => setUserPassword(text)}
-                                onBlur={onBlur}
                                 placeholder="Password"
                                 secureTextEntry={true}
                             />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )
-                    }
-                />
 
                 <TouchableOpacity
                     disabled={disabled}

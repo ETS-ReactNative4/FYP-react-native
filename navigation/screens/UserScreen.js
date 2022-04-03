@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, ImageBackground, StatusBar } from 'react-native';
+import { useState } from "react";
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, ImageBackground, StatusBar, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyProfileScreen from './MyProfileScreen';
@@ -9,8 +10,119 @@ import BackGroundPattern from '../../assets/images/BackGrounfPattern.jpg'
 
 export default function UserScreen({ navigation }) {
 
+    const [UserCredit, setUserCredit] = useState('0');
+
+    const [UserName, setUserName] = useState('');
+
+    const [disabled, setDisabled] = useState(false);
+
+
+    fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({
+        })
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.message == 'success') {
+                setUserCredit(res.usercredit);
+                setUserName(res.username);
+            }
+
+        })
+        .catch((error) => {
+            console.log("error fetching data")
+            console.log(error)
+            console.log(error.message) // Server can't be reached!
+            Alert.alert(
+                'Alert',
+                "Connection Error",
+                [
+                    { text: 'OK', onPress: () => navigation.navigate('Account') },
+                ],
+                { cancelable: false },
+            );
+        });
+
+
+
+    const onRefreshPressed = () => {
+        fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+    
+            },
+            body: JSON.stringify({
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                if (res.message == 'success') {
+                    setUserCredit(res.usercredit);               
+                }
+     
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => navigation.navigate('Account') },
+                    ],
+                    { cancelable: false },
+                );
+            });
+    
+    }
+
     const logOutPresssed = () => {
-        navigation.navigate('Account');
+        setDisabled(true);
+
+        fetch('http://3.217.241.125/FYP_api/logout.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                    console.log(res.sessionUserID)
+                    Alert.alert(
+                        'Alert',
+                        res.message,
+                        [
+                            { text: 'OK', onPress: () => {setDisabled(false), navigation.navigate('Account'); }},
+                        ],
+                        { cancelable: false },
+                    );                
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
+            });
     }
 
     const onMyProfilePressed = () => {
@@ -26,7 +138,7 @@ export default function UserScreen({ navigation }) {
     }
 
     return (
- 
+
         <View style={{
             flex: 1,
             backgroundColor: 'seagreen'
@@ -45,14 +157,23 @@ export default function UserScreen({ navigation }) {
                     justifyContent: 'center'
                 }}>
                     <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                    <Text style={styles.username}>Username</Text>
+                    <Text style={styles.username}>{UserName}</Text>
 
                     <View style={{
                         borderRadius: 15,
                         margin: 2,
                         backgroundColor: '#1d5837',
+                        flexDirection: 'row'
+
                     }}>
-                        <Text style={styles.recyclePoints}>100 Recycle Points</Text>
+                        <Text style={styles.recyclePoints}>{UserCredit} Recycle Points</Text>
+                        <TouchableOpacity
+                            disabled={disabled}
+                            onPress={onRefreshPressed}
+                            style={styles.refreshBtn}>
+                            <Ionicons name="refresh" size={17} color="whitesmoke" />
+                        </TouchableOpacity>
+
                     </View>
                 </View>
             </ImageBackground>
@@ -99,12 +220,13 @@ export default function UserScreen({ navigation }) {
                 backgroundColor: '#F2F2F2'
             }}>
 
-                <Ripple
+                <TouchableOpacity
+                    disabled={disabled}
                     onPress={logOutPresssed}
                     style={styles.container}>
-                    <Ionicons name="log-out-sharp" size={17} color="whitesmoke" />
+                    <Ionicons name="log-out" size={17} color="whitesmoke" />
                     <Text style={styles.text}>Log Out</Text>
-                </Ripple>
+                </TouchableOpacity>
 
             </View>
         </View>
@@ -159,6 +281,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 6,
         color: 'white'
+    }, 
+    refreshBtn: {
+        alignSelf: 'center',
+        marginRight: 1
     }
 
 })

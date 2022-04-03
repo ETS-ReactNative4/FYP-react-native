@@ -22,7 +22,6 @@ export default function SignupScreen({ navigation }) {
 
     const [disabled, setDisabled] = useState(false);
 
-
     const onSignUpPressed = () => {
 
         setDisabled(true);

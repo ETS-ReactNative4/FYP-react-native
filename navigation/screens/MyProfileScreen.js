@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useState } from "react";
+import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import CustomButton from '../../CustomButton/CutomButton';
@@ -10,112 +11,144 @@ import Ripple from 'react-native-material-ripple';
 
 export default function MyProfileScreen({ navigation }) {
 
-    const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
-    const onSaveChangesPressed = () => {
-        Alert.alert("Profile", "Saved Changes");
-    }
+
 
     const onChangePasswordPressed = () => {
         navigation.navigate('Change Password');
     }
 
-    const { control, handleSubmit, watch, formState: { errors } } = useForm();
+    const [name, setName] = useState();
 
-    const pwd = watch('userpassword');
+    const [phone, setPhone] = useState('');
+
+    const [UserName, setUserName] = useState('');
+
+    const [disabled, setDisabled] = useState(false);
+
+
+
+    fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+
+        })
+    })
+        .then((response) => response.json())
+        .then((res) => {
+
+            if (res.message == 'success') {
+                setPhone(res.userphone);
+                setUserName(res.username);
+                setName(res.name);
+
+            }
+
+        })
+        .catch((error) => {
+            console.log("error fetching data")
+            console.log(error)
+            console.log(error.message) // Server can't be reached!
+            Alert.alert(
+                'Alert',
+                "Connection Error",
+                [
+                    { text: 'OK', onPress: () => navigation.navigate('Account') },
+                ],
+                { cancelable: false },
+            );
+        });
+
+    const onSaveChangesPressed = () => {
+        setDisabled(true);
+
+        fetch('http://3.217.241.125/FYP_api/updateProfile.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                name: name,
+                phone: phone
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                if (res.message == "success") {
+                    Alert.alert(
+                        'Alert',
+                        'Profile Update Successful',
+                        [
+                            { text: 'OK', onPress: () => { setDisabled(false) } },
+                        ],
+                        { cancelable: false },
+                    );
+                } else {
+                    Alert.alert(
+                        'Alert',
+                        res.message,
+                        [
+                            { text: 'OK', onPress: () => setDisabled(false) },
+                        ],
+                        { cancelable: false },
+                    );
+                }
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => setDisabled(false) },
+                    ],
+                    { cancelable: false },
+                );
+            });
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
+                <Text style={styles.username}>{UserName}</Text>
 
-                <Controller
-                    control={control}
-                    name="useremail"
-                    rules={{
-                        required: 'Email Address is required',
-                        pattern: { value: EMAIL_REGEX, message: 'Invalid Email' },
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                defaultValue='info@gmail.com'
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Email address"
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={name}
+                    onChangeText={text => setName(text)}
+                    placeholder="Name"
                 />
 
-                <Controller
-                    control={control}
-                    name="userphone"
-                    rules={{
-                        required: 'Phone Number is required',
-                        maxLength: { value: 8, message: 'Phone Number should be 8 digits ' },
-                        minLength: { value: 8, message: 'Phone Number should be 8 digits ' }
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                defaultValue='39282000'
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Phone Number"
-                                keyboardType='numeric'
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={phone}
+                    onChangeText={text => setPhone(text)}
+                    placeholder="Phone"
+                    keyboardType={"number-pad"}
                 />
 
-                <Controller
-                    control={control}
-                    name="useraddress"
-                    rules={{
-                        required: 'Address is required'
-                    }
-                    }
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                defaultValue='3 King Ling Road, Tseung Kwan O'
-                                onChangeText={onChange}
-                                onBlur={onBlur}
-                                placeholder="Address"
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
-                />
-
-                <Ripple
+                <TouchableOpacity
                     onPress={onChangePasswordPressed}
                     style={styles.changePWD}>
                     <Text style={styles.changePWDtxt}>Change Password</Text>
-                </Ripple>
+                </TouchableOpacity>
 
-                <CustomButton text="Save" onPress={handleSubmit(onSaveChangesPressed)} />
+                <TouchableOpacity
+                    disabled={disabled}
+                    onPress={onSaveChangesPressed}
+                    style={styles.container}>
+                    <Text style={styles.text}>Save Changes</Text>
+                </TouchableOpacity>
+
 
             </View>
         </ScrollView>
@@ -124,13 +157,6 @@ export default function MyProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#82c844',
-        margin: 10,
-        flexDirection: 'row',
-    },
     input: {
         backgroundColor: 'white',
         width: '80%',
@@ -153,7 +179,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: 'black',
     },
-    changePWD:{
+    changePWD: {
         backgroundColor: 'white',
         width: '80%',
         padding: 15,
@@ -164,6 +190,18 @@ const styles = StyleSheet.create({
     changePWDtxt: {
         fontWeight: 'bold',
         color: 'seagreen',
-    }
+    },
+    container: {
+        backgroundColor: 'seagreen',
+        width: '80%',
+        padding: 15,
+        marginVertical: 5,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    text: {
+        fontWeight: 'bold',
+        color: 'white',
+    },
 
 });
