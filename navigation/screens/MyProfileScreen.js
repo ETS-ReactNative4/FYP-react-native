@@ -18,11 +18,15 @@ export default function MyProfileScreen({ navigation }) {
         navigation.navigate('Change Password');
     }
 
-    const [name, setName] = useState();
+    const [UserName, setUserName] = useState('');
+
+    const [newUserName, setNewUserName] = useState('');
+   
+    const [newPhone, setNewPhone] = useState('');
 
     const [phone, setPhone] = useState('');
 
-    const [UserName, setUserName] = useState('');
+    const [UserEmail, setUserEmail] = useState('');
 
     const [disabled, setDisabled] = useState(false);
 
@@ -42,10 +46,15 @@ export default function MyProfileScreen({ navigation }) {
         .then((res) => {
 
             if (res.message == 'success') {
+                if(res.userphone == null){
+                    setPhone('Phone Number')
+                    setUserName(res.username);
+                    setUserEmail(res.useremail)
+                }else{
                 setPhone(res.userphone);
                 setUserName(res.username);
-                setName(res.name);
-
+                setUserEmail(res.useremail)
+                }
             }
 
         })
@@ -74,8 +83,8 @@ export default function MyProfileScreen({ navigation }) {
 
             },
             body: JSON.stringify({
-                name: name,
-                phone: phone
+                newUserName: newUserName,
+                newPhone: newPhone
             })
         })
             .then((response) => response.json())
@@ -119,20 +128,20 @@ export default function MyProfileScreen({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>{UserName}</Text>
+                <Text style={styles.username}>{UserEmail}</Text>
 
                 <TextInput
                     style={styles.input}
-                    value={name}
-                    onChangeText={text => setName(text)}
-                    placeholder="Name"
+                    value={newUserName}
+                    onChangeText={text => setNewUserName(text)}
+                    placeholder={UserName}
                 />
 
                 <TextInput
                     style={styles.input}
-                    value={phone}
-                    onChangeText={text => setPhone(text)}
-                    placeholder="Phone"
+                    value={newPhone}
+                    onChangeText={text => setNewPhone(text)}
+                    placeholder={phone}
                     keyboardType={"number-pad"}
                 />
 

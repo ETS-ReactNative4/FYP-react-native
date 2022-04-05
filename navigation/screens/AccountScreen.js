@@ -12,7 +12,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 export default function AccountScreen({ navigation }) {
 
-    const [UserName, setUserName] = useState('');
+    const [UserEmail, setUserEmail] = useState('');
 
     const [UserPassword, setUserPassword] = useState('');
 
@@ -31,7 +31,7 @@ export default function AccountScreen({ navigation }) {
 
             },
             body: JSON.stringify({
-                username: UserName,
+                usernemail: UserEmail,
                 userpassword: UserPassword
             })
         })
@@ -86,9 +86,9 @@ export default function AccountScreen({ navigation }) {
 
                             <TextInput
                                 style={styles.input}
-                                value={UserName}
-                                onChangeText={text => setUserName(text)}
-                                placeholder="Username"
+                                value={UserEmail}
+                                onChangeText={text => setUserEmail(text)}
+                                placeholder="Email Address"
                             />
 
                             <TextInput

@@ -100,7 +100,6 @@ export default function UserScreen({ navigation }) {
         })
             .then((response) => response.json())
             .then((res) => {
-                    console.log(res.sessionUserID)
                     Alert.alert(
                         'Alert',
                         res.message,

@@ -81,7 +81,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     style={styles.input}
                     value={newPassword}
                     onChangeText={text => setNewPassword(text)}
-                    placeholder="Old Password"
+                    placeholder="New Password"
                     secureTextEntry={true}
                 />
 
@@ -89,7 +89,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     style={styles.input}
                     value={confirmPassword}
                     onChangeText={text => setConfirmPassword(text)}
-                    placeholder="Confrim Password"
+                    placeholder="Confrim New Password"
                     secureTextEntry={true}
                 />
 

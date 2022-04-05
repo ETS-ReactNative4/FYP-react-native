@@ -13,6 +13,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 export default function SignupScreen({ navigation }) {
 
+    const [UserEmail, setUserEmail] = useState('');
 
     const [UserName, setUserName] = useState('');
 
@@ -34,6 +35,7 @@ export default function SignupScreen({ navigation }) {
 
             },
             body: JSON.stringify({
+                useremail: UserEmail,
                 username: UserName,
                 userpassword: UserPassword,
                 confirmpassword: confirmUserPassword
@@ -72,9 +74,6 @@ export default function SignupScreen({ navigation }) {
         navigation.navigate('Account')
     }
 
-    const { control, handleSubmit, watch, formState: { errors } } = useForm();
-
-    const pwd = watch('userpassword');
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -82,76 +81,38 @@ export default function SignupScreen({ navigation }) {
                 <Text style={styles.title}>Create an Account</Text>
 
 
-
-
-                <Controller
-                    control={control}
-                    name="username"
-                    rules={{
-                        minLength: { value: 3, message: 'Username should be longer than 3 characters' }
-                    }}
-                    render={({ field: { value, }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={value}
-                                onChangeText={text => setUserName(text)}
-                                placeholder="Username"
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )}
+                <TextInput
+                    style={styles.input}
+                    value={UserEmail}
+                    onChangeText={text => setUserEmail(text)}
+                    placeholder="Email Address"
                 />
 
 
-                <Controller
-                    control={control}
-                    name="userpassword"
-                    rules={{}}
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={UserPassword}
-                                onChangeText={text => setUserPassword(text)}
-                                onBlur={onBlur}
-                                placeholder="Password"
-                                secureTextEntry={true}
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )
-                    }
+                <TextInput
+                    style={styles.input}
+                    value={UserName}
+                    onChangeText={text => setUserName(text)}
+                    placeholder="Username"
                 />
 
-                <Controller
-                    control={control}
-                    name="confirmuserpassword"
-                    rules={{}}
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <>
-                            <TextInput
-                                style={[styles.input, { borderColor: error ? 'red' : '#e8e8e8' }]}
-                                value={confirmUserPassword}
-                                onChangeText={text => setConfirmUserPassword(text)}
-                                onBlur={onBlur}
-                                placeholder="Confirm Password"
-                                secureTextEntry={true}
-                                touchableInactive={false}
-                            />
-                            {error && (
-                                <Text style={{ color: 'red' }}>
-                                    {error.message || 'Error'}
-                                </Text>)}
-                        </>
-                    )
-                    }
+
+
+                <TextInput
+                    style={styles.input}
+                    value={UserPassword}
+                    onChangeText={text => setUserPassword(text)}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                />
+
+
+                <TextInput
+                    style={styles.input}
+                    value={confirmUserPassword}
+                    onChangeText={text => setConfirmUserPassword(text)}
+                    placeholder="Confirm Password"
+                    secureTextEntry={true}
                 />
 
                 <TouchableOpacity
