@@ -10,12 +10,13 @@ import BackGroundPattern from '../../assets/images/BackGrounfPattern.jpg'
 
 export default function UserScreen({ navigation }) {
 
+    GLOBAL = require('../../globalVar/global');
+
     const [UserCredit, setUserCredit] = useState('0');
 
     const [UserName, setUserName] = useState('');
 
     const [disabled, setDisabled] = useState(false);
-
 
     fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
         method: 'POST',
@@ -86,42 +87,10 @@ export default function UserScreen({ navigation }) {
     }
 
     const logOutPresssed = () => {
-        setDisabled(true);
 
-        fetch('http://3.217.241.125/FYP_api/logout.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-
-            },
-            body: JSON.stringify({
-            })
-        })
-            .then((response) => response.json())
-            .then((res) => {
-                    Alert.alert(
-                        'Alert',
-                        res.message,
-                        [
-                            { text: 'OK', onPress: () => {setDisabled(false), navigation.navigate('Account'); }},
-                        ],
-                        { cancelable: false },
-                    );                
-            })
-            .catch((error) => {
-                console.log("error fetching data")
-                console.log(error)
-                console.log(error.message) // Server can't be reached!
-                Alert.alert(
-                    'Alert',
-                    "Connection Error",
-                    [
-                        { text: 'OK', onPress: () => setDisabled(false) },
-                    ],
-                    { cancelable: false },
-                );
-            });
+        GLOBAL.isLoggedIn = false;
+        navigation.navigate('Account');
+    
     }
 
     const onMyProfilePressed = () => {
@@ -240,7 +209,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginVertical: 5,
         alignItems: 'center',
-        borderRadius: 15,
+        borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'center'
     },

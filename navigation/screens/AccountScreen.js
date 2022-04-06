@@ -7,10 +7,13 @@ import SignupScreen from './SignupScreen';
 import UserScreen from './UserScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import { useForm, Controller } from 'react-hook-form';
+import { isLoggedIn } from '../../globalVar/global';
 
 
 
 export default function AccountScreen({ navigation }) {
+
+    GLOBAL = require('../../globalVar/global')
 
     const [UserEmail, setUserEmail] = useState('');
 
@@ -38,6 +41,9 @@ export default function AccountScreen({ navigation }) {
             .then((response) => response.json())
             .then((res) => {
                 if (res.message == "success") {
+
+                    GLOBAL.isLoggedIn = true;
+
                     Alert.alert(
                         'Alert',
                         'Login Successful',

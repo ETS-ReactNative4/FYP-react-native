@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import FortressIcon from '../../assets/images/FortressIcon.jpg';
 import bottle from '../../assets/images/bottle.jpg';
@@ -8,10 +8,57 @@ import bag from '../../assets/images/bag.jpg';
 import unbrella from '../../assets/images/umbrella.jpg';
 import Ripple from 'react-native-material-ripple';
 import { TextInput } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function RecyclemallScreen({navigation }) {
+export default function RecyclemallScreen({ navigation }) {
 
-    const [RecyclePoints, setRecyclePoints] = useState('100');    
+    
+    GLOBAL = require('../../globalVar/global');
+
+
+    if(GLOBAL.isLoggedIn){
+        fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({
+        })
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.message == 'success') {
+                setUserCredit(res.usercredit);
+                setUserName(res.username);
+            }
+
+        })
+        .catch((error) => {
+            console.log("error fetching data")
+            console.log(error)
+            console.log(error.message) // Server can't be reached!
+            Alert.alert(
+                'Alert',
+                "Connection Error",
+                [
+                    { text: 'OK'},
+                ],
+                { cancelable: false },
+            );
+        });
+    }
+    
+
+
+    const [UserCredit, setUserCredit] = useState('0');
+
+    const [UserName, setUserName] = useState('');
+
+    const [disabled, setDisabled] = useState(false);
+
+    const [RecyclePoints, setRecyclePoints] = useState('100');
 
     const onBottlePress = (data) => {
         setRecyclePoints(RecyclePoints - 100);
@@ -54,6 +101,40 @@ export default function RecyclemallScreen({navigation }) {
         })
     }
 
+    const onRefreshPressed = () => {
+        fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                if (res.message == 'success') {
+                    setUserCredit(res.usercredit);
+                    setUserName(res.username);
+                }
+
+            })
+            .catch((error) => {
+                console.log("error fetching data")
+                console.log(error)
+                console.log(error.message) // Server can't be reached!
+                Alert.alert(
+                    'Alert',
+                    "Connection Error",
+                    [
+                        { text: 'OK', onPress: () => navigation.navigate('Account', { screen: 'Account' }) },
+                    ],
+                    { cancelable: false },
+                );
+            });
+
+    } 
     return (
         <View style={{
             flex: 1,
@@ -71,7 +152,7 @@ export default function RecyclemallScreen({navigation }) {
                 borderRadius: 10
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
+                <Text style={styles.username}>{UserName}</Text>
                 <View style={{
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
@@ -87,7 +168,21 @@ export default function RecyclemallScreen({navigation }) {
                     }}>
                         Recycle Points
                     </Text>
-                    <Text style={styles.text} >{RecyclePoints}</Text>
+
+                    <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            marginBottom: 5
+                        }}>
+                         <Text style={styles.text} >{UserCredit}</Text>
+                    <TouchableOpacity
+                        disabled={disabled}
+                        onPress={onRefreshPressed}
+                        style={styles.refreshBtn}>
+                        <Ionicons name="refresh" size={20} color="whitesmoke" />
+                    </TouchableOpacity>
+                    </View>
+                   
                 </View>
             </View>
 
@@ -117,7 +212,7 @@ export default function RecyclemallScreen({navigation }) {
                 </Ripple>
 
                 <Ripple
-                    style={styles.reward} 
+                    style={styles.reward}
                     onPress={onTShirtPress}>
                     <View style={{
                         flexDirection: 'row',
@@ -132,8 +227,8 @@ export default function RecyclemallScreen({navigation }) {
                 </Ripple>
 
                 <Ripple
-                  style={styles.reward}
-                  onPress={onBagPress}>
+                    style={styles.reward}
+                    onPress={onBagPress}>
                     <View style={{
                         flexDirection: 'row',
 
@@ -147,8 +242,8 @@ export default function RecyclemallScreen({navigation }) {
                 </Ripple>
 
                 <Ripple
-                  style={styles.reward}
-                  onPress={onUmbrellaPress}>
+                    style={styles.reward}
+                    onPress={onUmbrellaPress}>
                     <View style={{
                         flexDirection: 'row',
                     }}>
@@ -225,5 +320,10 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         fontSize: 18,
         color: 'black',
+    },
+    refreshBtn: {
+        alignSelf: 'center',
+        marginRight: 1,
+        marginRight: 3
     }
 })

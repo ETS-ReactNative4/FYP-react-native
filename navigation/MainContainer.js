@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StatusBar } from 'react-native';
+
+import { StatusBar, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -30,6 +31,9 @@ const trackerName = "Tracker";
 
 const Tab = createBottomTabNavigator();
 
+GLOBAL = require('../globalVar/global');
+
+
 function MainContainer() {
   return (
     <NavigationContainer>
@@ -46,7 +50,6 @@ function MainContainer() {
             "paddingBottom": 10,
             "fontSize": 10,
           },
-
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let rn = route.name;
@@ -70,6 +73,7 @@ function MainContainer() {
             } else if (rn === trackerName) {
 
               iconName = focused ? 'bar-chart' : 'bar-chart-outline';
+
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -101,6 +105,7 @@ function MainContainer() {
 const Stack = createStackNavigator();
 
 function Account() {
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -121,7 +126,28 @@ function Account() {
   )
 }
 
-function RecycleMall() {
+function RecycleMall({ navigation }) {
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      
+      if (GLOBAL.isLoggedIn == false){
+        Alert.alert(
+          'Alert',
+          "Please Login",
+          [
+              { text: 'OK', onPress: () => navigation.navigate('Account', { screen: 'Account' }) },
+          ],
+          { cancelable: false },
+      );
+        }
+      // The screen is focused
+      // Call any action
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, []);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -138,7 +164,28 @@ function RecycleMall() {
   )
 }
 
-function Tracker() {
+function Tracker({ navigation }) {
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      
+      if (GLOBAL.isLoggedIn == false){
+        Alert.alert(
+          'Alert',
+          "Please Login",
+          [
+              { text: 'OK', onPress: () => navigation.navigate('Account', { screen: 'Account' }) },
+          ],
+          { cancelable: false },
+      );
+        }
+      // The screen is focused
+      // Call any action
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, []);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
@@ -152,6 +199,7 @@ function Tracker() {
     </NavigationContainer>
   )
 }
+
 
 export default MainContainer;
 
