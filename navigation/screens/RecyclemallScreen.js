@@ -128,7 +128,7 @@ export default function RecyclemallScreen({ navigation }) {
                     'Alert',
                     "Connection Error",
                     [
-                        { text: 'OK', onPress: () => navigation.navigate('Account', { screen: 'Account' }) },
+                        { text: 'OK' },
                     ],
                     { cancelable: false },
                 );

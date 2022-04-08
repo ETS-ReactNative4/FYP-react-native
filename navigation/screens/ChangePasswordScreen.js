@@ -11,7 +11,36 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ChangePasswordScreen({ navigation }) {
 
-    
+    fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({
+        })
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.message == 'success') {
+                setUserName(res.username);
+            }
+
+        })
+        .catch((error) => {
+            console.log("error fetching data")
+            console.log(error)
+            console.log(error.message) // Server can't be reached!
+            Alert.alert(
+                'Alert',
+                "Connection Error",
+                [
+                    { text: 'OK', onPress: () => navigation.navigate('Account', { screen: 'Account' }) },
+                ],
+                { cancelable: false },
+            );
+        });
 
 
     const [oldPassword, setOldPassword] = useState('');
@@ -19,6 +48,8 @@ export default function ChangePasswordScreen({ navigation }) {
     const [newPassword, setNewPassword] = useState('');
 
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [UserName, setUserName] = useState('');
 
     const [disabled, setDisabled] = useState(false);
 
@@ -67,7 +98,7 @@ export default function ChangePasswordScreen({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, alignItems: 'center', paddingTop: 30, }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
+                <Text style={styles.username}>{UserName}</Text>
 
                 <TextInput
                     style={styles.input}
@@ -100,7 +131,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     disabled={disabled}
                     onPress={onSavePressed}
                     style={styles.container}>
-                    <Text style={styles.text}>Login</Text>
+                    <Text style={styles.text}>Save Changes</Text>
                 </TouchableOpacity>
 
             </View>
