@@ -18,47 +18,13 @@ export default function UserScreen({ navigation }) {
 
     const [disabled, setDisabled] = useState(false);
 
-    fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-
-        },
-        body: JSON.stringify({
-        })
-    })
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.message == 'success') {
-                setUserCredit(res.usercredit);
-                setUserName(res.username);
-            }
-
-        })
-        .catch((error) => {
-            console.log("error fetching data")
-            console.log(error)
-            console.log(error.message) // Server can't be reached!
-            Alert.alert(
-                'Alert',
-                "Connection Error",
-                [
-                    { text: 'OK', onPress: () => navigation.navigate('Account') },
-                ],
-                { cancelable: false },
-            );
-        });
-
-
-
-    const onRefreshPressed = () => {
+    const getAccountInfo = () => {
         fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-    
+
             },
             body: JSON.stringify({
             })
@@ -66,9 +32,10 @@ export default function UserScreen({ navigation }) {
             .then((response) => response.json())
             .then((res) => {
                 if (res.message == 'success') {
-                    setUserCredit(res.usercredit);               
+                    setUserCredit(res.usercredit);
+                    setUserName(res.username);
                 }
-     
+
             })
             .catch((error) => {
                 console.log("error fetching data")
@@ -83,14 +50,19 @@ export default function UserScreen({ navigation }) {
                     { cancelable: false },
                 );
             });
-    
+    }
+
+        getAccountInfo();   
+
+    const onRefreshPressed = () => {
+        getAccountInfo();  
     }
 
     const logOutPresssed = () => {
 
         GLOBAL.isLoggedIn = false;
         navigation.navigate('Account');
-    
+
     }
 
     const onMyProfilePressed = () => {
@@ -249,7 +221,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 6,
         color: 'white'
-    }, 
+    },
     refreshBtn: {
         alignSelf: 'center',
         marginRight: 1

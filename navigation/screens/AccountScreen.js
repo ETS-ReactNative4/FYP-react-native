@@ -42,7 +42,7 @@ export default function AccountScreen({ navigation }) {
             .then((res) => {
                 if (res.message == "success") {
 
-                    GLOBAL.isLoggedIn = true;
+                    GLOBAL.isLoggedIn = true;               
 
                     Alert.alert(
                         'Alert',

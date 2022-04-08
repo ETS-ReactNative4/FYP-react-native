@@ -1,56 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
-import FortressIcon from '../../assets/images/FortressIcon.jpg';
-import bottle from '../../assets/images/bottle.jpg';
-import tshirt from '../../assets/images/t-shirt.jpg';
-import bag from '../../assets/images/bag.jpg';
-import unbrella from '../../assets/images/umbrella.jpg';
-import Ripple from 'react-native-material-ripple';
-import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function RecyclemallScreen({ navigation }) {
 
-    
+
     GLOBAL = require('../../globalVar/global');
-
-
-    if(GLOBAL.isLoggedIn){
-        fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-
-        },
-        body: JSON.stringify({
-        })
-    })
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.message == 'success') {
-                setUserCredit(res.usercredit);
-                setUserName(res.username);
-            }
-
-        })
-        .catch((error) => {
-            console.log("error fetching data")
-            console.log(error)
-            console.log(error.message) // Server can't be reached!
-            Alert.alert(
-                'Alert',
-                "Connection Error",
-                [
-                    { text: 'OK'},
-                ],
-                { cancelable: false },
-            );
-        });
-    }
-    
-
 
     const [UserCredit, setUserCredit] = useState('0');
 
@@ -58,50 +14,41 @@ export default function RecyclemallScreen({ navigation }) {
 
     const [disabled, setDisabled] = useState(false);
 
-    const [RecyclePoints, setRecyclePoints] = useState('100');
+    const [rewardArray, setRewardArray] = useState([]);
 
-    const onBottlePress = (data) => {
-        setRecyclePoints(RecyclePoints - 100);
+    const onPress = (rewardName, rewardId, requiredPoints, imgURL, fullDescription) => {
         navigation.navigate('Reward', {
-            redeemID: '202202014001',
-            rewardName: 'Eco Bottle',
-            requiredPoints: 100,
-            rewardPic: require('../../assets/images/bottle.jpg'),
-            description: '1.    During the promotion period, eligible MoneyBack members shop at PARKnSHOP eShop or PARKnSHOP Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
+            redeemID: rewardId,
+            rewardName: rewardName,
+            requiredPoints: requiredPoints,
+            rewardPic: imgURL,
+            description: fullDescription,
         })
+
+    }
+    const getRecycleMallDetail = () => {
+        fetch('http://3.217.241.125/FYP_api/getRecycleMallReward.php', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+
+            })
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                setRewardArray(res.reward);
+
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log(error.message);
+            })
     }
 
-    const onTShirtPress = (data) => {
-        navigation.navigate('Reward', {
-            redeemID: '202202014002',
-            rewardName: 'Eco Clothes',
-            requiredPoints: 150,
-            rewardPic: require('../../assets/images/t-shirt.jpg'),
-            description: '1.    During the promotion period, eligible MoneyBack members shop at Wellcome eShop or Wellcome Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
-        })
-    }
-
-    const onBagPress = (data) => {
-        navigation.navigate('Reward', {
-            redeemID: '202202014003',
-            rewardName: 'Recycle Bag',
-            requiredPoints: 175,
-            rewardPic: require('../../assets/images/bag.jpg'),
-            description: '1.    During the promotion period, eligible MoneyBack members shop at Fortress eShop or Fortress Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
-        })
-    }
-
-    const onUmbrellaPress = (data) => {
-        navigation.navigate('Reward', {
-            redeemID: '202202014004',
-            rewardName: 'Eco Umbrella',
-            requiredPoints: 200,
-            rewardPic: require('../../assets/images/umbrella.jpg'),
-            description: '1.    During the promotion period, eligible MoneyBack members shop at Fortress eShop or Fortress Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
-        })
-    }
-
-    const onRefreshPressed = () => {
+    const getAccountInfo = () => {
         fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
             method: 'POST',
             headers: {
@@ -126,15 +73,21 @@ export default function RecyclemallScreen({ navigation }) {
                 console.log(error.message) // Server can't be reached!
                 Alert.alert(
                     'Alert',
-                    "Connection Error",
+                    "Unable to get Account Detail",
                     [
-                        { text: 'OK' },
+                        { text: 'OK'},
                     ],
                     { cancelable: false },
                 );
             });
+    }
 
-    } 
+    if (GLOBAL.isLoggedIn) {
+
+        getRecycleMallDetail();
+        getAccountInfo();
+
+    }
     return (
         <View style={{
             flex: 1,
@@ -170,19 +123,13 @@ export default function RecyclemallScreen({ navigation }) {
                     </Text>
 
                     <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            marginBottom: 5
-                        }}>
-                         <Text style={styles.text} >{UserCredit}</Text>
-                    <TouchableOpacity
-                        disabled={disabled}
-                        onPress={onRefreshPressed}
-                        style={styles.refreshBtn}>
-                        <Ionicons name="refresh" size={20} color="whitesmoke" />
-                    </TouchableOpacity>
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        marginBottom: 5
+                    }}>
+                        <Text style={styles.text} >{UserCredit}</Text>
                     </View>
-                   
+
                 </View>
             </View>
 
@@ -196,64 +143,27 @@ export default function RecyclemallScreen({ navigation }) {
                     borderTopRightRadius: 10,
                 }}>
 
-                <Ripple
-                    style={styles.reward}
-                    onPress={onBottlePress}>
-                    <View style={{
-                        flexDirection: 'row',
+                {
+                    rewardArray.map(reward => (
+                        <TouchableOpacity
+                            key={reward.id}
+                            style={styles.reward}
+                            onPress={() => onPress(reward.name, reward.id, reward.point, reward.img, reward.fullDescription)}>
+                            <View style={{
+                                flexDirection: 'row',
 
-                    }}>
-                        <Image source={bottle} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Eco Bottle</Text>
-                        <View style={styles.requiredPtView}>
-                            <Text>100 Points</Text>
-                        </View>
-                    </View>
-                </Ripple>
+                            }}>
+                                <Image source={{ uri: reward.img }} style={styles.coupocIcon}></Image>
+                                <Text style={styles.productText}>{reward.name}</Text>
+                                <View style={styles.requiredPtView}>
+                                    <Text>{reward.point} points</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
 
-                <Ripple
-                    style={styles.reward}
-                    onPress={onTShirtPress}>
-                    <View style={{
-                        flexDirection: 'row',
 
-                    }}>
-                        <Image source={tshirt} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Eco Clothes</Text>
-                        <View style={styles.requiredPtView}>
-                            <Text>150 Points</Text>
-                        </View>
-                    </View>
-                </Ripple>
-
-                <Ripple
-                    style={styles.reward}
-                    onPress={onBagPress}>
-                    <View style={{
-                        flexDirection: 'row',
-
-                    }}>
-                        <Image source={bag} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Recycle Bag </Text>
-                        <View style={styles.requiredPtView}>
-                            <Text>175 Points</Text>
-                        </View>
-                    </View>
-                </Ripple>
-
-                <Ripple
-                    style={styles.reward}
-                    onPress={onUmbrellaPress}>
-                    <View style={{
-                        flexDirection: 'row',
-                    }}>
-                        <Image source={unbrella} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Eco Umbrella</Text>
-                        <View style={styles.requiredPtView}>
-                            <Text>200 Points</Text>
-                        </View>
-                    </View>
-                </Ripple>
+                    ))
+                }
 
             </ScrollView>
         </View >

@@ -30,12 +30,12 @@ export default function RewardScreen({ route, navigation }) {
 
     return (
         <ScrollView style={{ flex: 1 }}>
-            <Image source={rewardPic} style={styles.coupocIcon}></Image>
+            <Image source={{uri: JSON.parse(JSON.stringify(rewardPic))}} style={styles.coupocIcon}></Image>
             <Text style={styles.text}>{JSON.parse(JSON.stringify(rewardName))}</Text>
             <Text style={styles.requiredPoints}>Requied Points: {JSON.parse(JSON.stringify(requiredPoints))}</Text>
             <View style={{ padding: 15 }}>
                 <Text
-                    style={styles.description}>{"\n"}Terms & Conditions: {"\n\n"} {JSON.parse(JSON.stringify(description))}</Text>
+                    style={styles.description}>{"\n"}Description: {"\n\n"} {JSON.parse(JSON.stringify(description))}</Text>
             </View>
             <Ripple
                 onPress={onRedeemPressed}
