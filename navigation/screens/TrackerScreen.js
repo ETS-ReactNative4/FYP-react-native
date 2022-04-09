@@ -1,8 +1,19 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, ImageBackground} from 'react-native';
 import profilePic from '../../assets/images/user.png';
 
 export default function TrackerScreen({ navigation }) {
+
+    GLOBAL = require('../../globalVar/global');
+
+    const [UserCredit, setUserCredit] = useState('0');
+
+    const [UserName, setUserName] = useState('');
+
+    const [recordArray, setRecordArray] = useState([]);
+
+    const [disabled, setDisabled] = useState(false);
+
     return (
         <View style={{
             flex:1,
@@ -96,7 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: 15,
         alignSelf: 'center',
-        width: 378,
+        width: '99%',
         justifyContent: 'center',
         borderRadius: 5,
         borderWidth: 1,

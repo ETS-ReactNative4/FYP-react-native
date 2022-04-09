@@ -1,26 +1,27 @@
-import * as React from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import bottle from '../../assets/images/bottle.jpg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Ripple from 'react-native-material-ripple';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Tab = createMaterialTopTabNavigator();
 
 
 export default function RedeemedRewardScreen({ route, navigation }) {
 
-    const onBottlePress = (data) => {
+    const [redeemedRewardArray, setRedeemedRewardArray] = useState([]);
 
-        navigation.navigate('Redeemed Reward', {
-            redeemID: '202202014001',
-            rewardName: 'Eco Bottle',
-            requiredPoints: 100,
-            rewardPic: require('../../assets/images/bottle.jpg'),
-            description: '1.    During the promotion period, eligible MoneyBack members shop at PARKnSHOP eShop or PARKnSHOP Mobile App over $1000 can get two HK$50 eCoupon. Upon completion of delivery, the eCoupon will be awarded to “eCoupon” section of MoneyBack account within 14 days and a SMS will be sent (only applicable to members who subscribed and agreed to receive promotional message).  The eCoupon can be used once only. Expired or unused eCoupon will not be re-issued. \n 2.    The offer is only available to MoneyBack App user. \n 3.    eCoupon valid till 8 Nov 2022.'
-        })
-    }
+    useEffect(() => {
+        api();
+    }, []);
 
+    const api = async () => {
+        await fetch("http://3.217.241.125/FYP_api/getRedeemedReward.php")
+            .then((res) => res.json())
+            .then((data) => setRedeemedRewardArray(data.reward));
+        console.log("redeemedRewardArray");
+    };
 
 
     const onBackPressed = () => {
@@ -49,9 +50,31 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                 flex: 1,
             }}>
 
-                <Ripple
+                {
+                    redeemedRewardArray.map(reward => (
+                        <TouchableOpacity
+                            key={reward.userOrder_ID}
+                            style={styles.reward}
+                            >
+                            <View style={{
+                                flexDirection: 'row',
+                            }}>
+                                <Image source={{ uri: reward.img }} style={styles.coupocIcon}></Image>
+                                <Text style={styles.productText}>{reward.name}</Text>
+                                <View style={styles.requiredPtView}>
+                                    <Text>{reward.point} points</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+
+
+                    ))
+                }
+
+
+                <TouchableOpacity
                     style={styles.reward}
-                    onPress={onBottlePress}>
+                    onPress={{}}>
                     <View style={{
                         flexDirection: 'row',
 
@@ -62,13 +85,13 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                             <Text>100 Points</Text>
                         </View>
                     </View>
-                </Ripple>
+                </TouchableOpacity>
             </ScrollView>
 
-            <Ripple onPress={onBackPressed} style={styles.BackBtn}>
+            <TouchableOpacity onPress={onBackPressed} style={styles.BackBtn}>
                 <Ionicons name="arrow-back-circle" size={20} color="dimgrey" />
                 <Text style={styles.BackBtnTxt}>Back</Text>
-            </Ripple>
+            </TouchableOpacity>
         </SafeAreaView>
     )
 }

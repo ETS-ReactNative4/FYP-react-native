@@ -4,17 +4,26 @@ import QRCode from '../../assets/images/rickRollQRCode.png'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Ripple from 'react-native-material-ripple';
 
-export default function CoupponScreen({route, navigation }) {
+export default function CoupponScreen({ route, navigation }) {
 
-    const { rewardName, redeemID } = route.params;
+    const { verifyCode, rewardName, userOrderID } = route.params;
 
     return (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
             <StatusBar barStyle="dark-content" backgroundColor="seagreen" />
             <Text style={styles.text}>Reward successfully redeemed!</Text>
-            <Ionicons name="checkmark-circle-outline" size={200} color="dimgrey" style={{justifyContent: 'center', alignSelf: 'center'}} />
+            <Ionicons name="checkmark-circle-outline" size={200} color="dimgrey" style={{ justifyContent: 'center', alignSelf: 'center' }} />
             <Text style={styles.text}>{JSON.parse(JSON.stringify(rewardName))}</Text>
-            <Text style={styles.text}>Redeem ID: {JSON.parse(JSON.stringify(redeemID))}</Text>
+            <Text style={styles.text}>QTY: 1</Text>
+            <Text style={styles.text}>Order ID: {JSON.parse(JSON.stringify(userOrderID))}</Text>
+            <Text style={styles.text}>Verify ID: {JSON.parse(JSON.stringify(verifyCode))}</Text>
+            <Text style={{
+                justifyContent: 'center',
+                fontSize: 15,
+                alignSelf: 'center',
+                color: 'black',
+                marginTop: 10
+            }}>Please Show this Message to our staff to get reward</Text>
         </View>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -12,82 +12,68 @@ export default function RecyclemallScreen({ navigation }) {
 
     const [UserName, setUserName] = useState('');
 
+    const [rewardArray, setRewardArray] = useState([]);
+
     const [disabled, setDisabled] = useState(false);
 
-    const [rewardArray, setRewardArray] = useState([]);
 
     const onPress = (rewardName, rewardId, requiredPoints, imgURL, fullDescription) => {
         navigation.navigate('Reward', {
-            redeemID: rewardId,
             rewardName: rewardName,
+            rewardId: rewardId,
             requiredPoints: requiredPoints,
-            rewardPic: imgURL,
-            description: fullDescription,
+            imgURL: imgURL,
+            fullDescription: fullDescription,
         })
-
-    }
-    const getRecycleMallDetail = () => {
-        fetch('http://3.217.241.125/FYP_api/getRecycleMallReward.php', {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-
-            })
-        })
-            .then((response) => response.json())
-            .then((res) => {
-                setRewardArray(res.reward);
-
-            })
-            .catch((error) => {
-                console.log(error);
-                console.log(error.message);
-            })
     }
 
-    const getAccountInfo = () => {
-        fetch('http://3.217.241.125/FYP_api/getAccountDetail.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
 
-            },
-            body: JSON.stringify({
-            })
-        })
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.message == 'success') {
-                    setUserCredit(res.usercredit);
-                    setUserName(res.username);
-                }
+    useEffect(() => {
+        api();
+    }, []);
 
-            })
-            .catch((error) => {
-                console.log("error fetching data")
-                console.log(error)
-                console.log(error.message) // Server can't be reached!
-                Alert.alert(
-                    'Alert',
-                    "Unable to get Account Detail",
-                    [
-                        { text: 'OK'},
-                    ],
-                    { cancelable: false },
-                );
-            });
+    const api = async () => {
+        await fetch("http://3.217.241.125/FYP_api/getRecycleMallReward.php")
+            .then((res) => res.json())
+            .then((data) => setRewardArray(data.reward));
+        console.log('success');
+    };
+
+
+    const onRefreshPressed = () => {
+        
+            fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.message == 'success') {
+                        setUserCredit(data.usercredit);
+                        setUserName(data.username);
+                        console.log("get ac success");
+                    }
+                }) 
     }
 
     if (GLOBAL.isLoggedIn) {
+        
 
-        getRecycleMallDetail();
-        getAccountInfo();
+        useEffect(() => {
+            Accountapi();
+        }, []);
 
+        const Accountapi = async () => {
+            await fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.message == 'success') {
+                        setUserCredit(data.usercredit);
+                        setUserName(data.username);
+                        console.log("get ac success");
+                    }
+                })
+
+        };
     }
+
     return (
         <View style={{
             flex: 1,
@@ -120,6 +106,7 @@ export default function RecyclemallScreen({ navigation }) {
                         color: 'whitesmoke',
                     }}>
                         Recycle Points
+
                     </Text>
 
                     <View style={{
@@ -128,6 +115,11 @@ export default function RecyclemallScreen({ navigation }) {
                         marginBottom: 5
                     }}>
                         <Text style={styles.text} >{UserCredit}</Text>
+                        <TouchableOpacity
+                            onPress={onRefreshPressed}
+                            style={styles.refreshBtn}>
+                            <Ionicons name="refresh" size={17} color="whitesmoke" />
+                        </TouchableOpacity>
                     </View>
 
                 </View>
@@ -146,12 +138,12 @@ export default function RecyclemallScreen({ navigation }) {
                 {
                     rewardArray.map(reward => (
                         <TouchableOpacity
+                            disabled={disabled}
                             key={reward.id}
                             style={styles.reward}
-                            onPress={() => onPress(reward.name, reward.id, reward.point, reward.img, reward.fullDescription)}>
+                            onPress={() => onPress(reward.name, reward.id, reward.point, reward.img, reward.fullDescription)} >
                             <View style={{
                                 flexDirection: 'row',
-
                             }}>
                                 <Image source={{ uri: reward.img }} style={styles.coupocIcon}></Image>
                                 <Text style={styles.productText}>{reward.name}</Text>
