@@ -48,7 +48,7 @@ export default function RewardScreen({ route, navigation }) {
         })
             .then((response) => response.json())
             .then((res) => {
-                if (res.message = 'success') {                
+                if (res.message == 'success') {                
                     navigation.navigate('Redeemed Reward', {
                         verifyCode : res.verifyCode,
                         rewardName: rewardName,
@@ -56,7 +56,7 @@ export default function RewardScreen({ route, navigation }) {
                         qty: 1.
                     })
                     setDisabled(false);
-                } else {
+                } else if(res.message == 'Not Enough Recycle Points'){
                     Alert.alert(
                         'Alert',
                         res.message,
