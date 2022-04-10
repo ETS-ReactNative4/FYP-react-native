@@ -52,10 +52,10 @@ export default function UserScreen({ navigation }) {
             });
     }
 
-        getAccountInfo();   
+    getAccountInfo();
 
     const onRefreshPressed = () => {
-        getAccountInfo();  
+        getAccountInfo();
     }
 
     const logOutPresssed = () => {
@@ -75,6 +75,10 @@ export default function UserScreen({ navigation }) {
 
     const onContactUsPressed = () => {
         Alert.alert("Contact Us", "Tel: 12345678 \n Email: erecycle@gmail.com");
+    }
+
+    const onTrackerPressed = () => {
+        navigation.navigate('Tracker');
     }
 
     return (
@@ -117,46 +121,62 @@ export default function UserScreen({ navigation }) {
                     </View>
                 </View>
             </ImageBackground>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
+            <View
                 style={{
                     backgroundColor: '#F2F2F2',
-                    flex: 1,
+                    flex: 1.2,
                     borderTopLeftRadius: 15,
                     borderTopRightRadius: 15,
+                    height: '100%'
 
                 }}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{flex:1}}>
 
-                <Ripple
-                    onPress={onMyProfilePressed}
-                    style={styles.acFunctionBtn}>
-                    <Ionicons name="person-outline" size={30} color="dimgrey" />
-                    <Text style={styles.acFunctionTxt}>My Profile</Text>
-                    <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Ripple>
+                    <TouchableOpacity
+                        onPress={onMyProfilePressed}
+                        style={styles.acFunctionBtn}>
+                        <Ionicons name="person-outline" size={30} color="dimgrey" />
+                        <Text style={styles.acFunctionTxt}>My Profile</Text>
+                        <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
+                    </TouchableOpacity>
 
-                <Ripple
-                    onPress={onRedeemedRwardPressed}
-                    style={styles.acFunctionBtn}>
-                    <Ionicons name="gift-outline" size={30} color="dimgrey" />
-                    <Text style={styles.acFunctionTxt}>Redeemed Rewards</Text>
-                    <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Ripple>
+                    <TouchableOpacity
+                        onPress={onRedeemedRwardPressed}
+                        style={styles.acFunctionBtn}>
+                        <Ionicons name="gift-outline" size={30} color="dimgrey" />
+                        <Text style={styles.acFunctionTxt}>Redeemed Rewards</Text>
+                        <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
+                    </TouchableOpacity>
 
-                <Ripple
-                    onPress={onContactUsPressed}
-                    style={styles.acFunctionBtn}>
-                    <Ionicons name="call-outline" size={30} color="dimgrey" />
-                    <Text style={styles.acFunctionTxt}>Contact Us</Text>
-                    <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
-                </Ripple>
+                    <TouchableOpacity
+                        onPress={onTrackerPressed}
+                        style={styles.acFunctionBtn}>
+                        <Ionicons name="bar-chart-outline" size={30} color="dimgrey" />
+                        <Text style={styles.acFunctionTxt}>Tracker</Text>
+                        <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
+                    </TouchableOpacity>
 
-            </ScrollView>
+                    <TouchableOpacity
+                        onPress={onContactUsPressed}
+                        style={styles.acFunctionBtn}>
+                        <Ionicons name="call-outline" size={30} color="dimgrey" />
+                        <Text style={styles.acFunctionTxt}>Contact Us</Text>
+                        <Ionicons name="chevron-forward-outline" size={20} color="dimgrey" />
+                    </TouchableOpacity>
+
+
+
+                </ScrollView>
+
+            </View>
+
             <View style={{
                 paddingBottom: 5,
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                flex: 1,
+                flex: 0.8,
                 backgroundColor: '#F2F2F2'
             }}>
 

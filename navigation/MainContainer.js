@@ -69,10 +69,6 @@ function MainContainer() {
 
               iconName = focused ? 'person' : 'person-outline';
 
-            } else if (rn === trackerName) {
-
-              iconName = focused ? 'bar-chart' : 'bar-chart-outline';
-
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -85,11 +81,6 @@ function MainContainer() {
             headerShown: false
           }}
           name={recycelmallName} component={RecycleMall} />
-        <Tab.Screen
-          options={{
-            headerShown: false,
-          }}
-          name={trackerName} component={Tracker} />
         <Tab.Screen
           options={{
             headerShown: false
@@ -120,6 +111,7 @@ function Account() {
         <Stack.Screen name="Profile" component={MyProfileScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Avaliable Reward" component={RedeemedRewardScreen} />
         <Stack.Screen name="Redeemed Reward" component={CouponScreen} />
+        <Stack.Screen name="Tracker" component={TrackerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -158,6 +150,7 @@ function RecycleMall({ navigation }) {
         <Stack.Screen name="Recycle Mall" component={RecyclemallScreen} />
         <Stack.Screen name="Reward" component={RewardScreen} />
         <Stack.Screen name="Redeemed Reward" component={CouponScreen} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   )

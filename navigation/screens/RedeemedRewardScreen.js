@@ -53,12 +53,6 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                 
             }}>
                     <Text style={styles.TopBarTxt}>Avaliable</Text>
-                    <TouchableOpacity
-                            onPress={api}
-                            style={styles.refreshBtn}>
-                            <Ionicons name="refresh" size={20} color="seagreen" />
-                     </TouchableOpacity>
-                    
             </View>
 
             <ScrollView style={{

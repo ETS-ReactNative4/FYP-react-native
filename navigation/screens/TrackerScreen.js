@@ -50,10 +50,6 @@ export default function TrackerScreen({ navigation }) {
 
     };
 
-    const onRefreshPressed = () => {
-       api();
-       Accountapi();
-    }
 
     return (
         <View style={{
@@ -78,12 +74,7 @@ export default function TrackerScreen({ navigation }) {
                     flexDirection: 'row',
 
                 }}>
-                    <Text style={styles.recyclePoints}>{UserCredit} Recycle Points</Text>
-                    <TouchableOpacity
-                        onPress={onRefreshPressed}
-                        style={styles.refreshBtn}>
-                        <Ionicons name="refresh" size={17} color="whitesmoke" />
-                    </TouchableOpacity>
+                    <Text style={styles.recyclePoints}>{UserCredit} Recycle Points</Text>               
                 </View>
             </View>
 
