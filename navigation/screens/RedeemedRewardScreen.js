@@ -14,28 +14,33 @@ export default function RedeemedRewardScreen({ route, navigation }) {
 
     const onPress = (rewardName, userOrderID, verifyCode, qty) => {
         navigation.navigate('Redeemed Reward', {
-            verifyCode : verifyCode,
+            verifyCode: verifyCode,
             rewardName: rewardName,
-            userOrderID : userOrderID,
+            userOrderID: userOrderID,
             qty: qty
         })
     }
+
     useEffect(() => {
         api();
+
     }, []);
+
+
+
 
     const api = async () => {
         await fetch("http://3.217.241.125/FYP_api/getRedeemedReward.php")
             .then((res) => res.json())
             .then((data) => {
-                if (data.message != 'No Redeemed Reward'){
-                    setRecordArray(data.record);
-                }else{
-                    setRecordArray([]);
+                if (data.message != 'No Redeemed Reward') {
+                    setRedeemedRewardArray(data.reward);
+                }else if (data.message == 'No Redeemed Reward'){
+                    setRedeemedRewardArray([]);
                 }
-            }
-            
-            );
+
+            });
+
     };
 
 
@@ -58,9 +63,9 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                 justifyContent: 'center',
                 borderBottomColor: 'seagreen',
                 borderBottomWidth: 2,
-                
+
             }}>
-                    <Text style={styles.TopBarTxt}>Avaliable</Text>
+                <Text style={styles.TopBarTxt}>Avaliable</Text>
             </View>
 
             <ScrollView style={{
@@ -83,7 +88,7 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                                     marginBottom: 80
                                 }}>
                                     <Text style={styles.productText}>{reward.rewardName} QTY: {reward.userOrder_Qty}</Text>
-                                    <Text style={styles.TopBarTxt}>{reward.userOrder_OrderDate}</Text>
+                                    <Text style={styles.TopBarTxt}>{reward.userOrder_Orderer}</Text>
                                 </View>
                                 <View style={styles.requiredPtView}>
                                     <Text>{reward.userOrder_TotalCredit} points</Text>

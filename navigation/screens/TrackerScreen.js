@@ -14,13 +14,12 @@ export default function TrackerScreen({ navigation }) {
     const [recordArray, setRecordArray] = useState([]);
 
 
-        if (GLOBAL.isLoggedIn){
              useEffect(() => {
             api();
             Accountapi();
         
         }, []);
-        }
+        
        
     
 
