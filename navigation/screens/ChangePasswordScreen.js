@@ -120,7 +120,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     style={styles.input}
                     value={confirmPassword}
                     onChangeText={text => setConfirmPassword(text)}
-                    placeholder="Confrim New Password"
+                    placeholder="Confirm New Password"
                     secureTextEntry={true}
                 />
 
