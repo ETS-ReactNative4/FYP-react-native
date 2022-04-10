@@ -195,6 +195,8 @@ function Tracker({ navigation }) {
           headerShown: true
         }}>
         <Stack.Screen name="Tracker" component={TrackerScreen} />
+        
+        
       </Stack.Navigator>
     </NavigationContainer>
   )

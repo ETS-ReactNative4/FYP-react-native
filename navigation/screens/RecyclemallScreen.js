@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function RecyclemallScreen({ navigation }) {
-
 
     GLOBAL = require('../../globalVar/global');
 
@@ -16,6 +16,7 @@ export default function RecyclemallScreen({ navigation }) {
 
     const [disabled, setDisabled] = useState(false);
 
+    const isFocused = useIsFocused();
 
     const onPress = (rewardName, rewardId, requiredPoints, imgURL, fullDescription) => {
         navigation.navigate('Reward', {
@@ -36,42 +37,29 @@ export default function RecyclemallScreen({ navigation }) {
         await fetch("http://3.217.241.125/FYP_api/getRecycleMallReward.php")
             .then((res) => res.json())
             .then((data) => setRewardArray(data.reward));
-        console.log('success');
     };
 
 
+    const Accountapi = async () => {
+        await fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.message == 'success') {
+                    setUserCredit(data.usercredit);
+                    setUserName(data.username);
+                }
+            })
+
+    };
+
     const onRefreshPressed = () => {
-        
-            fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.message == 'success') {
-                        setUserCredit(data.usercredit);
-                        setUserName(data.username);
-                        console.log("get ac success");
-                    }
-                }) 
+        Accountapi();
     }
 
     if (GLOBAL.isLoggedIn) {
-        
-
-        useEffect(() => {
+     
             Accountapi();
-        }, []);
 
-        const Accountapi = async () => {
-            await fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.message == 'success') {
-                        setUserCredit(data.usercredit);
-                        setUserName(data.username);
-                        console.log("get ac success");
-                    }
-                })
-
-        };
     }
 
     return (

@@ -20,7 +20,6 @@ export default function HomeScreen() {
     await fetch("http://3.217.241.125/FYP_api/getStoreDetail.php")
       .then((res) => res.json())
       .then((data) => setCoords(data.coordinates));
-    console.log('Get Store Success');
   };
 
 

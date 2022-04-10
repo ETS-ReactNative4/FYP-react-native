@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, ImageBackground} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function TrackerScreen({ navigation }) {
 
@@ -12,12 +13,52 @@ export default function TrackerScreen({ navigation }) {
 
     const [recordArray, setRecordArray] = useState([]);
 
-    const [disabled, setDisabled] = useState(false);
+
+        if (GLOBAL.isLoggedIn){
+             useEffect(() => {
+            api();
+            Accountapi();
+        
+        }, []);
+        }
+       
+    
+
+    const api = async () => {
+        await fetch("http://3.217.241.125/FYP_api/getRecycleRecord.php")
+            .then((res) => res.json())
+            .then((data) =>  {
+                    if (data.message != 'No Recycle Record'){
+                        setRecordArray(data.record);
+                    }else{
+                        setRecordArray([]);
+                    }
+                    
+            });
+               
+    };
+
+    const Accountapi = async () => {
+        await fetch("http://3.217.241.125/FYP_api/getAccountDetail.php")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.message == 'success') {
+                    setUserCredit(data.usercredit);
+                    setUserName(data.username);
+                }
+            })
+
+    };
+
+    const onRefreshPressed = () => {
+       api();
+       Accountapi();
+    }
 
     return (
         <View style={{
-            flex:1,
-            }}>
+            flex: 1,
+        }}>
             <View style={{
                 flex: 0.4,
                 backgroundColor: 'seagreen',
@@ -28,73 +69,51 @@ export default function TrackerScreen({ navigation }) {
 
             }}>
                 <Image source={profilePic} style={styles.icon} resizeMode='cover'></Image>
-                <Text style={styles.username}>Username</Text>
+                <Text style={styles.username}>{UserName}</Text>
 
                 <View style={{
                     borderRadius: 20,
-                    margin:2,
+                    margin: 2,
                     backgroundColor: '#1d5837',
+                    flexDirection: 'row',
+
                 }}>
-                    <Text style={styles.recyclePoints}>100 Recycle Points</Text>
+                    <Text style={styles.recyclePoints}>{UserCredit} Recycle Points</Text>
+                    <TouchableOpacity
+                        onPress={onRefreshPressed}
+                        style={styles.refreshBtn}>
+                        <Ionicons name="refresh" size={17} color="whitesmoke" />
+                    </TouchableOpacity>
                 </View>
             </View>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={styles.scrollView}>
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Tseung Kwan O | 8-2-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 10 | Glass: 5 | Paper: 0 | Can: 5</Text>
-                        <Text style={styles.recordPoints}>20</Text>
-                    </View>
-                </View>
 
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Tiu Keng Leng | 7-2-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 0 | Glass: 5 | Paper: 0 | Can: 0</Text>
-                        <Text style={styles.recordPoints}>5</Text>
-                    </View>
-                </View>
+                {
+                    recordArray.map(record => (
+                        <View 
+                        style={styles.record}
+                        key={record.recycle_ID}
+                        >
+                            <View style={{ margin: 5 }}>
+                                <Text style={styles.recordHeader}>{record.StoreName}</Text>
+                                <Text style={styles.recordText}>{record.recycle_Date}</Text>
+                                <Text style={styles.recordText}>Plastic: {record.Plastic} | Glass: {record.Glass} | Paper: {record.Paper} | Metal: {record.Metal}</Text>
+                                <Text style={styles.recordPoints}>{record.Credit}</Text>
+                            </View>
+                        </View>
+                    ))
+                }
+                    
 
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Bo Lam | 28-1-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 8 | Glass: 0 | Paper: 0 | Can: 10</Text>
-                        <Text style={styles.recordPoints}>18</Text>
-                    </View>
-                </View>
-
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Kwun Tong | 15-1-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 10 | Glass: 3 | Paper: 7 | Can: 5</Text>
-                        <Text style={styles.recordPoints}>25</Text>
-                    </View>
-                </View>
-
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Kwun Tong | 15-1-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 10 | Glass: 3 | Paper: 7 | Can: 5</Text>
-                        <Text style={styles.recordPoints}>25</Text>
-                    </View>
-                </View>
-
-                <View style={styles.record}>
-                    <View style={{ margin: 5 }}>
-                        <Text style={styles.recordHeader}>Kwun Tong | 4-1-2022</Text>
-                        <Text style={styles.recordText}>Bottle: 1 | Glass: 3 | Paper: 0 | Can: 1</Text>
-                        <Text style={styles.recordPoints}>5</Text>
-                    </View>
-                </View>
             </ScrollView>
         </View>
     );
 }
 const styles = StyleSheet.create({
-    scrollView: {    
+    scrollView: {
         paddingTop: 10,
         alignSelf: 'center',
         flex: 1,
@@ -141,6 +160,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 5,
         color: 'white',
+    },
+    refreshBtn: {
+        alignSelf: 'center',
+        marginRight: 5
     }
 
 });

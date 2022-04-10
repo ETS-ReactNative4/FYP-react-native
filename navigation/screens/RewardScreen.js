@@ -53,6 +53,7 @@ export default function RewardScreen({ route, navigation }) {
                         verifyCode : res.verifyCode,
                         rewardName: rewardName,
                         userOrderID : res.userOrderID,
+                        qty: 1.
                     })
                     setDisabled(false);
                 } else {

@@ -12,6 +12,14 @@ export default function RedeemedRewardScreen({ route, navigation }) {
 
     const [redeemedRewardArray, setRedeemedRewardArray] = useState([]);
 
+    const onPress = (rewardName, userOrderID, verifyCode, qty) => {
+        navigation.navigate('Redeemed Reward', {
+            verifyCode : verifyCode,
+            rewardName: rewardName,
+            userOrderID : userOrderID,
+            qty: qty
+        })
+    }
     useEffect(() => {
         api();
     }, []);
@@ -20,7 +28,6 @@ export default function RedeemedRewardScreen({ route, navigation }) {
         await fetch("http://3.217.241.125/FYP_api/getRedeemedReward.php")
             .then((res) => res.json())
             .then((data) => setRedeemedRewardArray(data.reward));
-        console.log("redeemedRewardArray");
     };
 
 
@@ -38,12 +45,20 @@ export default function RedeemedRewardScreen({ route, navigation }) {
         }}>
             <StatusBar barStyle="dark-content" backgroundColor="#F2F2F2" />
             <View style={{
-                flex: 0.1,
+                height: '8%',
                 flexDirection: 'row',
+                justifyContent: 'center',
+                borderBottomColor: 'seagreen',
+                borderBottomWidth: 2,
+                
             }}>
-                <Ripple style={styles.SelectedTopBarBtn}>
                     <Text style={styles.TopBarTxt}>Avaliable</Text>
-                </Ripple>
+                    <TouchableOpacity
+                            onPress={api}
+                            style={styles.refreshBtn}>
+                            <Ionicons name="refresh" size={20} color="seagreen" />
+                     </TouchableOpacity>
+                    
             </View>
 
             <ScrollView style={{
@@ -55,14 +70,21 @@ export default function RedeemedRewardScreen({ route, navigation }) {
                         <TouchableOpacity
                             key={reward.userOrder_ID}
                             style={styles.reward}
-                            >
+                            onPress={() => onPress(reward.rewardName, reward.userOrder_ID, reward.userOrder_VerifyCode, reward.userOrder_Qty)}
+                        >
                             <View style={{
                                 flexDirection: 'row',
                             }}>
                                 <Image source={{ uri: reward.img }} style={styles.coupocIcon}></Image>
-                                <Text style={styles.productText}>{reward.name}</Text>
+                                <View style={{
+                                    flexDirection: 'column',
+                                    marginBottom: 80
+                                }}>
+                                    <Text style={styles.productText}>{reward.rewardName} QTY: {reward.userOrder_Qty}</Text>
+                                    <Text style={styles.TopBarTxt}>{reward.userOrder_OrderDate}</Text>
+                                </View>
                                 <View style={styles.requiredPtView}>
-                                    <Text>{reward.point} points</Text>
+                                    <Text>{reward.userOrder_TotalCredit} points</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -70,22 +92,6 @@ export default function RedeemedRewardScreen({ route, navigation }) {
 
                     ))
                 }
-
-
-                <TouchableOpacity
-                    style={styles.reward}
-                    onPress={{}}>
-                    <View style={{
-                        flexDirection: 'row',
-
-                    }}>
-                        <Image source={bottle} style={styles.coupocIcon}></Image>
-                        <Text style={styles.productText}>Eco Bottle</Text>
-                        <View style={styles.requiredPtView}>
-                            <Text>100 Points</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
             </ScrollView>
 
             <TouchableOpacity onPress={onBackPressed} style={styles.BackBtn}>
@@ -106,6 +112,7 @@ const styles = StyleSheet.create({
         borderColor: 'seagreen'
     },
     TopBarTxt: {
+        justifyContent: 'center',
         fontSize: 15,
         color: 'seagreen',
         fontWeight: 'bold',
@@ -163,4 +170,9 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         margin: 5
     },
+    refreshBtn: {
+        marginLeft: 5,
+        marginTop: 15,
+        alignSelf: 'center',
+    }
 })
