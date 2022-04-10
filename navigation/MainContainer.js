@@ -33,7 +33,6 @@ const Tab = createBottomTabNavigator();
 
 GLOBAL = require('../globalVar/global');
 
-
 function MainContainer() {
   return (
     <NavigationContainer>
