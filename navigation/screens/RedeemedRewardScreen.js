@@ -27,7 +27,15 @@ export default function RedeemedRewardScreen({ route, navigation }) {
     const api = async () => {
         await fetch("http://3.217.241.125/FYP_api/getRedeemedReward.php")
             .then((res) => res.json())
-            .then((data) => setRedeemedRewardArray(data.reward));
+            .then((data) => {
+                if (data.message != 'No Redeemed Reward'){
+                    setRecordArray(data.record);
+                }else{
+                    setRecordArray([]);
+                }
+            }
+            
+            );
     };
 
 
