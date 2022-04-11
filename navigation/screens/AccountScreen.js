@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from "react";
+import React, {useState} from 'react';
 import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import Logo from '../../assets/images/logo.png';
 import CustomButton from '../../CustomButton/CutomButton';

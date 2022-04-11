@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Ripple from 'react-native-material-ripple';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
 export default function RewardScreen({ route, navigation }) {
 
 

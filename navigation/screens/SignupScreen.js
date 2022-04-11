@@ -1,12 +1,7 @@
-import * as React from 'react';
-import { useState } from "react";
+import React, {useEffect,useState,useRef} from 'react';
 import { View, Text, Image, Pressable, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import Logo from '../../assets/images/logo.png';
-import CustomButton from '../../CustomButton/CutomButton';
-import UserScreen from './UserScreen';
+
 import { TextInput } from 'react-native-gesture-handler';
-import Ripple from 'react-native-material-ripple';
-import { useForm, Controller } from 'react-hook-form';
 
 
 

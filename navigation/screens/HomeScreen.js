@@ -1,5 +1,5 @@
 
-import React, { Component, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Polyline } from 'react-native-maps';

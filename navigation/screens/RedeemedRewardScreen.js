@@ -1,9 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native';
-import bottle from '../../assets/images/bottle.jpg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Ripple from 'react-native-material-ripple';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 

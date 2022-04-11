@@ -1,11 +1,7 @@
-import * as React from 'react';
-import { useState } from "react";
+import React, {useEffect,useState,useRef} from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, ScrollView, ImageBackground, StatusBar, TouchableOpacity } from 'react-native';
 import profilePic from '../../assets/images/user.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MyProfileScreen from './MyProfileScreen';
-import { createStackNavigator } from '@react-navigation/stack';
-import Ripple from 'react-native-material-ripple';
 import BackGroundPattern from '../../assets/images/BackGrounfPattern.jpg'
 
 export default function UserScreen({ navigation }) {

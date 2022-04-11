@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert, StatusBar } from 'react-native';
 import QRCode from '../../assets/images/rickRollQRCode.png'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Ripple from 'react-native-material-ripple';
 
 export default function CoupponScreen({ route, navigation }) {
 

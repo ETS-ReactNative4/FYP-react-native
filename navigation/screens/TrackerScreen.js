@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import profilePic from '../../assets/images/user.png';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 export default function TrackerScreen({ navigation }) {
 

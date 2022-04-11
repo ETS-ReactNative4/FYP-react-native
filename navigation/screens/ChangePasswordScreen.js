@@ -1,12 +1,8 @@
-import * as React from 'react';
-import { useState } from "react";
+import React, {useState} from 'react';
 import { View, Text, Image, Pressable, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'react-native';
 import profilePic from '../../assets/images/user.png';
-import CustomButton from '../../CustomButton/CutomButton';
 import { TextInput } from 'react-native-gesture-handler';
-import { useForm, Controller } from 'react-hook-form';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 export default function ChangePasswordScreen({ navigation }) {
